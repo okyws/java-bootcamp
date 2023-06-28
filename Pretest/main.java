@@ -209,5 +209,10 @@ public class main {
      * }
      * }
      */
+
+    /*
+     * soal no 17 -20
+     * menggunakan file Warnet.java
+     */
   }
 }
