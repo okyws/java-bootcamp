@@ -36,8 +36,8 @@ public class WeekendParking {
     if (parkingDuration > maxDurationWithSeal) {
       return 0;
     } else if (parkingDuration > maxDurationWithoutSeal) {
-      extraHours = parkingDuration - maxDurationWithoutSeal;
-      return baseRate * parkingDuration + (additionalRate * extraHours);
+      extraHours = (parkingDuration - maxDurationWithoutSeal) * additionalRate;
+      return baseRate * parkingDuration + extraHours;
     } else {
       return baseRate * parkingDuration;
     }

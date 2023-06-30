@@ -71,5 +71,7 @@ public class Warnet {
 
     // Output hasil
     System.out.println("Biaya minimum yang harus Anda bayar adalah Rp. " + biaya);
+
+    input.close();
   }
 }
