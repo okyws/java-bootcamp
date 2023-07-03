@@ -1,39 +1,34 @@
 import java.util.Scanner;
 
 public class Latihan {
-
   public static void main(String args[]) {
     Scanner input = new Scanner(System.in);
-    String word;
-    char result;
-    int isUpperCase = 0;
-    int isLowerCase = 0;
-    int isDigit = 0;
-    int isSymbol = 0;
 
-    System.out.print("Masukkan kata: ");
-    word = input.nextLine();
+    int lebar_belah_ketupat, i, j, k;
 
-    for (int i = 0; i < word.length(); i++) {
-      result = word.charAt(i);
+    System.out.print("Input lebar belah ketupat: ");
+    lebar_belah_ketupat = input.nextInt();
+    System.out.println();
 
-      if (Character.isUpperCase(result)) {
-        isUpperCase++;
-      } else if (Character.isLowerCase(result)) {
-        isLowerCase++;
-      } else if (Character.isDigit(result)) {
-        isDigit++;
-      } else {
-        isSymbol++;
+    for (i = 1; i <= lebar_belah_ketupat; i++) {
+      for (j = 1; j <= lebar_belah_ketupat - i; j++) {
+        System.out.print(" ");
       }
+      for (k = 1; k <= i; k++) {
+        System.out.print(" *");
+      }
+      System.out.println();
     }
-    input.close();
 
-    System.out.println("Jumlah huruf besar: " + isUpperCase);
-    System.out.println("Jumlah huruf kecil: " + isLowerCase);
-    System.out.println("Jumlah angka: " + isDigit);
-    System.out.println("Jumlah simbol: " + isSymbol);
-
+    for (i = 1; i < lebar_belah_ketupat; i++) {
+      for (j = 1; j <= i; j++) {
+        System.out.print(" ");
+      }
+      for (k = 1; k <= lebar_belah_ketupat - i; k++) {
+        System.out.print(" *");
+      }
+      System.out.println();
+    }
   }
 }
 
@@ -154,6 +149,44 @@ public class Latihan {
  * System.out.println("Jumlah angka: " + isDigit);
  * System.out.println("Jumlah simbol: " + isSymbol);
  *
+ * }
+ * }
+ */
+
+/*
+ * Latihan Belah ketupat
+ * 
+ * import java.util.Scanner;
+ * 
+ * public class Latihan {
+ * public static void main(String args[]) {
+ * Scanner input = new Scanner(System.in);
+ * 
+ * int lebar_belah_ketupat, i, j, k;
+ * 
+ * System.out.print("Input lebar belah ketupat: ");
+ * lebar_belah_ketupat = input.nextInt();
+ * System.out.println();
+ * 
+ * for (i = 1; i <= lebar_belah_ketupat; i++) {
+ * for (j = 1; j <= lebar_belah_ketupat - i; j++) {
+ * System.out.print(" ");
+ * }
+ * for (k = 1; k <= i; k++) {
+ * System.out.print(" *");
+ * }
+ * System.out.println();
+ * }
+ * 
+ * for (i = 1; i < lebar_belah_ketupat; i++) {
+ * for (j = 1; j <= i; j++) {
+ * System.out.print(" ");
+ * }
+ * for (k = 1; k <= lebar_belah_ketupat - i; k++) {
+ * System.out.print(" *");
+ * }
+ * System.out.println();
+ * }
  * }
  * }
  */

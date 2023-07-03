@@ -53,8 +53,11 @@ public class SquareComparation {
     side = validateInput(input, 1, RANGE_LIMIT);
 
     area1 = side * side;
+    System.out.println(area1);
     area2 = (radius2 * radius2) * area1 / (radius1 * radius1);
+    System.out.println(area2);
     area3 = (radius3 * radius3) * area1 / (radius1 * radius1);
+    System.out.println(area3);
 
     result = area1 + area2 + area3;
 

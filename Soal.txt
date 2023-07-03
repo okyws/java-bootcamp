@@ -1,0 +1,22 @@
+Corat Coret untuk Soal Coding
+
+input : dua bilangan bulat x dan y(0<=x<=y<=100)
+output : menampilkan bilangan antara x dan y
+
+konversi reamur ke kelvin
+k = reamur x 1.25 + 273
+input bilangan ril
+jangkauan
+-273 >= reamur <= 80
+
+kali dua
+0<=x<=100
+output: x=5 hasilnya jadi 10
+
+biaya setelah bunga
+input: bilangan ril,
+biaya awal (0 < awal < 150000)
+bunga (0 <= bunga <= 100)
+
+output:
+100000 2 = 102000.00
