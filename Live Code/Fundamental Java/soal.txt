@@ -1,0 +1,170 @@
+Ganjil Dua Dimensi
+
+Buatlah sebuah program untuk menghitung banyaknya kemunculan bilangan ganjil pada array X, di mana X adalah array 2 dimensi berordo 4 × 4.
+
+Spesifikasi Input
+
+Empat baris masing-masing berisi empat bilangan bulat positif untuk mengisi array X.
+
+Spesifikasi Output
+
+Satu baris berisi jumlah bilangan ganjil yang ada di array X.
+For example:
+
+Input	          Result
+1 1 1 1           8
+2 2 2 2
+3 3 3 3
+4 4 4 4
+
+1 1 1 1           16
+1 1 1 1
+1 1 1 1
+1 1 1 1
+
+1 1 2 2           8
+2 4 1 1
+1 1 6 8
+6 4 1 1
+
+
+
+
+
+Mengurutkan Data Integer
+
+Buatlah program untuk mengurutkan tiga data integer yang dimasukkan secara descending (dari besar ke kecil).
+
+Spesifikasi Input
+
+Satu baris berisi tiga buah bilangan bulat. Masing-masing bilangan bulat memiliki jangkauan nilai -300 ≤ data ≤ 300.
+
+Spesifikasi Output
+
+Satu baris berisi tiga buah bilangan bulat yang sudah terurut secara descending, dipisahkan oleh satu spasi.
+
+For example:
+
+Input           	Result
+5 8 6             8 6 5
+100 150 300       300 150 100
+-2 -1 -300        -1 -2 -300
+
+
+
+
+
+
+
+
+
+
+Promo Pujasera Polban
+
+
+Di Pujasera 79 terdapat promo untuk karyawan yang berulang tahun. Promo tersebut berlaku jika karyawan yang berulang tahun memesan makanan atau minuman dengan jumlah harga minimal Rp 50000.
+
+Jika memenuhi kriteria tersebut maka karyawan tersebut akan mendapat potongan harga sebesar :
+
+2% x Tanggal Lahir x Jumlah Harga Makanan atau Minuman
+
+Bantulah seorang karyawan yang berulang tahun untuk menghitung uang yang harus dibayar jika pada hari ulang tahunnya dia membeli makanan atau minuman di Pujasera 79.
+
+Spesifikasi Input
+Satu baris berisi bilangan riil yang menujukkan jumlah harga makanan atau minuman yang sudah dipesan dan bilangan bulat yang menunjukkan tanggal lahir mahasiwa.
+
+Spesifikasi Output
+Satu baris berisi bilangan riil total uang yang harus dibayar mahasiwa yang berulang tahun dengan dua angka dibelakang koma.
+
+
+For example:
+
+Input	        Result
+50000         30000.00
+20
+
+40000         40000.00
+31
+
+49900         49900.00
+31
+
+
+
+
+
+
+
+
+
+
+Menghitung Huruf Berlubang smile
+
+
+Seorang programmer menulis suatu teks pada sebuah kertas dan sekarang dia ingin mengetahui berapa banyak "lubang" yang terdapat pada teks tersebut.
+
+Apa yang dimaksud dengan “lubang”?
+
+Huruf ‘A’, ‘D’, ‘O’, dan ‘P’ mempunyai satu lubang. Huruf ‘B’ mempunyai 2 lubang. Sedangkan huruf ‘C’, ‘E’, ‘F’, dan lainnya tidak memiliki lubang.
+
+ Jadi, dapat dikatakan bahwa jumlah lubang pada teks tersebut sama dengan jumlah total lubang dari setiap huruf yang ada.
+
+ Bantulah programmer tersebut untuk menghitung berapa banyak lubang yang terdapat pada sebuah teks dengan membuat sebuah program!
+
+ (Sumber: http://www.codechef.com/problems/HOLES)
+
+Spesifikasi Input
+
+Satu baris berisi string/array karakter dengan panjang maksimal 50 karakter, hanya terdiri dari huruf-huruf alfabet, dan hanya berupa huruf kapital.
+
+Spesifikasi Output
+
+Satu baris berisi bilangan bulat yang menyatakan jumlah lubang pada string tersebut.
+
+For example:
+Input	                Result
+BANDUNG               4
+
+JUARA                 3
+
+CEFGHIJKLMNSTUVWXYZ   0
+
+
+
+
+
+
+
+
+
+Maksimal Tiga Bilangan
+
+Buatlah sebuah program untuk menentukan bilangan terbesar dari tiga bilangan yang dimasukkan.
+
+
+Spesifikasi Input
+
+Tiga baris, masing-masing berisi satu bilangan bulat Xi (-30 ≤ Xi ≤ 30).
+
+Spesifikasi Output
+
+Satu baris berisi bilangan bulat terbesar dari tiga bilangan bulat input.
+
+For example:
+
+Input	Result
+12    12
+5
+3
+
+9     10
+6
+10
+
+30    30
+30
+30
+
+0     1
+1
+-1
