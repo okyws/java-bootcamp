@@ -12,6 +12,7 @@ public class JumlahLuasPersegi {
     sisi3 = input.nextInt();
     System.out.print("Sisi: ");
     double sisi4 = input.nextDouble();
+    input.close();
 
     luas1 = sisi4 * sisi4;
     System.out.println("Luas persegi pertama adalah " + luas1);
