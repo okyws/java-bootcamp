@@ -11,8 +11,6 @@ public class RomanNumberToDecimal {
     decimalNumber = getDecimalInput(input);
     romanNumber = toRomanNumber(decimalNumber);
     System.out.print(romanNumber);
-
-    input.close();
   }
 
   public static int getDecimalInput(Scanner input) {
