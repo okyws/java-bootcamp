@@ -16,9 +16,21 @@ public class RomanNumberToDecimal {
   public static int getDecimalInput(Scanner input) {
     int decimalNumber;
 
-    do {
+    // do {
+    // decimalNumber = input.nextInt();
+    // } while (decimalNumber < 1 || decimalNumber > 3999);
+
+    while (true) {
       decimalNumber = input.nextInt();
-    } while (decimalNumber < 1 || decimalNumber > 3999);
+      if (decimalNumber >= 1 && decimalNumber <= 3999) {
+        break;
+      }
+    }
+
+    // decimalNumber = input.nextInt();
+    // while (decimalNumber < 1 || decimalNumber > 3999) {
+    // decimalNumber = input.nextInt();
+    // }
 
     input.close();
     return decimalNumber;
@@ -63,6 +75,7 @@ public class RomanNumberToDecimal {
 
       while (decimalNumber >= value) {
         romanNumber.append(symbol);
+        // System.out.println(decimalNumber); // proses perhitungan
         decimalNumber -= value;
       }
     }
