@@ -8,7 +8,13 @@ public class KonversiDetik {
     detik = input.nextInt();
     input.close();
 
-    System.out.println(konversiDetik(detik));
+    // akses secara langsung
+    // System.out.println(konversiDetik(detik));
+
+    // akses alternative
+    for (int i = 0; i < konversiDetik(detik).length(); i++) {
+      System.out.print(konversiDetik(detik).charAt(i));
+    }
   }
 
   public static String konversiDetik(int detik) {
