@@ -1,0 +1,22 @@
+kalkulasiGajiPokok(int masaKerja, String tipeGolongan,int golonganPangkat);
+
+kalkulasiTunjanganKeluarga(String statusPernikahan,int gajiPokok);
+
+kalkulasiTunjanganAnak(int jumlahAnak,int gajiPokok);
+
+kalkulasiTunjanganBeras(String statusPernikahan, int jumlahAnak);
+
+kalkulasiTunjanganUmumJabatan(int golonganPangkat);
+
+kalkulasiGajiKotor(int gajiPokok,int tunjanganAnak,int tunjanganKeluarga,int
+tunjanganUmumJabatan,int tunjanganBeras);
+
+kalkulasiPotonganPPH(int gajiPokok,String statusPernikahan,int gajiKotor,int jumlahAnak,int tunjanganKeluarga,int tunjanganAnak);
+
+kalkulasiPotonganIWP(int gajiPokok,int tunjanganAnak,int tunjanganKeluarga);
+
+kalkulasiPotonganTaperum(int golonganPangkat);
+
+kalkulasiGajiBersih(int gajiKotor, int potonganPPH, int potonganIWP,int potonganTaperum);
+
+displayOutput(String nama,int gajiPokok,int tunjanganKeluarga, int tunjanganAnak, int tunjanganBeras, int tunjanganUmumJabatan, int gajiKotor, int potonganPPH, int potonganIWP, int potonganTaperum, int gajiBersih);
