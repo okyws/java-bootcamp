@@ -42,18 +42,13 @@ public class GajiPNSOkyWS {
     tunjanganKeluarga = kalkulasiTunjanganKeluarga(statusPernikahan, masaKerja, tipeGolongan, golonganPangkat);
     tunjanganUmumJabatan = kalkulasiTunjanganUmumJabatan(golonganPangkat);
     tunjanganBeras = kalkulasiTunjanganBeras(jumlahAnak, statusPernikahan);
-    gajiKotor = kalkulasiGajiKotor(gajiPokok, tunjanganAnak, tunjanganKeluarga, tunjanganUmumJabatan, tunjanganBeras,
-        masaKerja, tipeGolongan, golonganPangkat, jumlahAnak, statusPernikahan);
+    gajiKotor = kalkulasiGajiKotor(gajiPokok, tunjanganAnak, tunjanganKeluarga, tunjanganUmumJabatan, tunjanganBeras);
     biayaJabatan = kalkulasiBiayaJabatan(gajiKotor);
     iuranPensiun = kalkulasiIuranPensiun(gajiPokok, tunjanganAnak, tunjanganKeluarga);
-    penghasilanNeto = kalkulasiPenghasilanNeto(gajiKotor, biayaJabatan, iuranPensiun, gajiPokok, tunjanganAnak,
-        tunjanganKeluarga, tunjanganUmumJabatan, tunjanganBeras, masaKerja, tipeGolongan, golonganPangkat, jumlahAnak,
-        statusPernikahan);
-    potonganPPH = kalkulasiPotonganPPH((int) gajiPokok, statusPernikahan, gajiKotor, jumlahAnak,
-        tunjanganKeluarga, tunjanganAnak, biayaJabatan, iuranPensiun,
-        tunjanganUmumJabatan,
-        tunjanganBeras, masaKerja,
-        tipeGolongan, golonganPangkat, penghasilanNeto);
+    penghasilanNeto = kalkulasiPenghasilanNeto(gajiKotor, biayaJabatan, iuranPensiun);
+    potonganPPH = kalkulasiPotonganPPH((int) gajiPokok, statusPernikahan, gajiKotor, jumlahAnak, tunjanganKeluarga,
+        tunjanganAnak, biayaJabatan, iuranPensiun, tunjanganUmumJabatan, tunjanganBeras, masaKerja, tipeGolongan,
+        golonganPangkat, penghasilanNeto);
     potonganIWP = kalkulasiPotonganIWP(gajiPokok, tunjanganAnak, tunjanganKeluarga);
     potonganTaperum = kalkulasiPotonganTaperum(golonganPangkat);
     jumlahPotonganPPH21 = kalkulateJumlahPotonganPPH21(potonganPPH, potonganIWP, potonganTaperum);
@@ -454,13 +449,8 @@ public class GajiPNSOkyWS {
 
   // kalkulasi gaji kotor
   public static double kalkulasiGajiKotor(double gajiPokok, double tunjanganAnak, double tunjanganKeluarga,
-      double tunjanganUmumJabatan, double tunjanganBeras, int masaKerja, String tipeGolongan, int golonganPangkat,
-      int jumlahAnak, String statusPernikahan) {
-    gajiPokok = kalkulasiGajiPokok(masaKerja, tipeGolongan, golonganPangkat);
-    tunjanganAnak = kalkulasiTunjanganAnak(jumlahAnak, gajiPokok);
-    tunjanganKeluarga = kalkulasiTunjanganKeluarga(statusPernikahan, masaKerja, tipeGolongan, golonganPangkat);
-    tunjanganUmumJabatan = kalkulasiTunjanganUmumJabatan(golonganPangkat);
-    tunjanganBeras = kalkulasiTunjanganBeras(jumlahAnak, statusPernikahan);
+      double tunjanganUmumJabatan, double tunjanganBeras) {
+
     double gajiKotor = gajiPokok + tunjanganKeluarga + tunjanganAnak + tunjanganBeras + tunjanganUmumJabatan;
 
     return gajiKotor;
@@ -475,44 +465,41 @@ public class GajiPNSOkyWS {
 
   // kalkulasi iuran pensiun
   public static double kalkulasiIuranPensiun(double gajiPokok, double tunjanganAnak, double tunjanganKeluarga) {
-    double iuranPensiun = (gajiPokok + tunjanganAnak + tunjanganKeluarga) * 0.0475;
+    double iuranPensiunPercentage = 0.0475;
+    double iuranPensiun = (gajiPokok + tunjanganAnak + tunjanganKeluarga) * iuranPensiunPercentage;
     return iuranPensiun;
   }
 
   // kalkulasi penghasilan neto
-  public static double kalkulasiPenghasilanNeto(double gajiKotor, double biayaJabatan, double iuranPensiun,
-      double gajiPokok, double tunjanganAnak, double tunjanganKeluarga, double tunjanganUmumJabatan,
-      double tunjanganBeras, int masaKerja, String tipeGolongan, int golonganPangkat, int jumlahAnak,
-      String statusPernikahan) {
-    gajiKotor = kalkulasiGajiKotor(gajiPokok, tunjanganAnak, tunjanganKeluarga, tunjanganUmumJabatan, tunjanganBeras,
-        masaKerja, tipeGolongan, golonganPangkat, jumlahAnak, statusPernikahan);
-    biayaJabatan = kalkulasiBiayaJabatan(gajiKotor);
-    iuranPensiun = kalkulasiIuranPensiun(gajiPokok, tunjanganAnak, tunjanganKeluarga);
+  public static double kalkulasiPenghasilanNeto(double gajiKotor, double biayaJabatan, double iuranPensiun) {
     double penghasilanNeto = gajiKotor - (biayaJabatan + iuranPensiun);
-
     return penghasilanNeto;
   }
 
   // penghasilan neto dalam 1 tahun
   public static double kalkulasiPenghasilanNetoPerTahun(double penghasilanNeto) {
-    double penghasilanNetoPerTahun = penghasilanNeto * 12.0;
+    double satuTahun = 12;
+    double penghasilanNetoPerTahun = penghasilanNeto * satuTahun;
     return penghasilanNetoPerTahun;
   }
 
   // kalkulasi potongan PPH
   public static double kalkulasiPotonganPPH(int gajiPokok, String statusPernikahan, double gajiKotor, int jumlahAnak,
       double tunjanganKeluarga, double tunjanganAnak, double biayaJabatan, double iuranPensiun,
-      double tunjanganUmumJabatan, double tunjanganBeras, int masaKerja, String tipeGolongan, int golonganPangkat,
-      double penghasilanNeto) {
+      double tunjanganUmumJabatan,
+      double tunjanganBeras, int masaKerja,
+      String tipeGolongan, int golonganPangkat, double penghasilanNeto) {
 
     double ptkp = kalkulasiPTKP(jumlahAnak, statusPernikahan);
 
     int penghasilanNetoPerTahun = (int) (kalkulasiPenghasilanNetoPerTahun(penghasilanNeto));
 
     double penghasilanKenaPajak = 0;
-    if (penghasilanNeto > 4500000.0) {
-      penghasilanKenaPajak = kalkulasiPenghasilanKenaPajak(penghasilanNetoPerTahun, (int) ptkp);
-    }
+    int minWajibPajak = 4500000;
+
+    penghasilanKenaPajak = (penghasilanNeto > minWajibPajak)
+        ? penghasilanKenaPajak = kalkulasiPenghasilanKenaPajak(penghasilanNetoPerTahun, (int) ptkp)
+        : 0;
 
     double potonganPPH = kalkulasiPPH21(penghasilanKenaPajak);
     return potonganPPH;
@@ -521,21 +508,23 @@ public class GajiPNSOkyWS {
   // kalkulasi ptkp
   public static double kalkulasiPTKP(int jumlahAnak, String statusPernikahan) {
     int ptkpDiriSendiri = 36000000;
+    int ptkpIstriSuami = 0;
     int ptkpPerAnak = 3000000;
     int maxJumlahAnak = 3;
 
-    int ptkpIstriSuami = hitungPTKPIstriSuami(statusPernikahan);
+    ptkpIstriSuami = (int) hitungPTKPIstriSuami(statusPernikahan);
 
     double ptkp = ptkpDiriSendiri + ptkpIstriSuami + (ptkpPerAnak * Math.min(jumlahAnak, maxJumlahAnak));
     return ptkp;
   }
 
   // hitung ptkp istri suami
-  public static int hitungPTKPIstriSuami(String statusPernikahan) {
+  public static double hitungPTKPIstriSuami(String statusPernikahan) {
     int ptkpIstriSuami = 0;
     if (statusPernikahan.equalsIgnoreCase("Kawin")) {
       ptkpIstriSuami = 3000000;
     }
+
     return ptkpIstriSuami;
   }
 
@@ -556,7 +545,6 @@ public class GajiPNSOkyWS {
   // kalkulate jumlah potongan untuk pph
   public static double kalkulateJumlahPotonganPPH21(double potonganPPH, double potonganIWP, double potonganTaperum) {
     double jumlahPotonganPPH21 = potonganPPH + potonganIWP + potonganTaperum;
-    // Debug perhitungan
     // System.out.printf("Potongan: %.2f %.2f %.2f %.2f\n", jumlahPotonganPPH21,
     // potonganPPH, potonganIWP,
     // potonganTaperum);
@@ -593,27 +581,21 @@ public class GajiPNSOkyWS {
     System.out.printf("Tunjangan Umum Jabatan: %.2f\n", kalkulasiTunjanganUmumJabatan(golonganPangkat));
     System.out.printf(
         "Gaji Bruto: %.2f\n",
-        kalkulasiGajiKotor(jumlahAnak, jumlahAnak, jumlahAnak, jumlahAnak, indexStatusPernikahan, masaKerja,
-            tipeGolongan, golonganPangkat, jumlahAnak, statusPernikahan));
+        kalkulasiGajiKotor(gajiPokok, tunjanganAnak, tunjanganKeluarga, tunjanganUmumJabatan, tunjanganBeras));
     System.out.printf("PPH21: %.2f\n",
-        kalkulasiPotonganPPH(indexStatusPernikahan, statusPernikahan, gajiKotor, jumlahAnak, tunjanganKeluarga,
-            tunjanganAnak, biayaJabatan, iuranPensiun, tunjanganUmumJabatan, tunjanganBeras, masaKerja, tipeGolongan,
-            golonganPangkat, penghasilanNeto));
+        kalkulasiPotonganPPH((int) gajiPokok, statusPernikahan, gajiKotor, jumlahAnak, tunjanganKeluarga, tunjanganAnak,
+            biayaJabatan, iuranPensiun, tunjanganUmumJabatan, tunjanganBeras, masaKerja, tipeGolongan, golonganPangkat,
+            penghasilanNeto));
     System.out.printf("Potongan IWP: %.2f\n", kalkulasiPotonganIWP(gajiPokok, tunjanganAnak, tunjanganKeluarga));
     System.out.printf("Potongan Taperum: %.2f\n", kalkulasiPotonganTaperum(golonganPangkat));
     System.out.printf("Gaji Take Home Pay: %.2f\n", kalkulasiGajiTakeHomePay(gajiKotor, jumlahPotonganPPH21));
     System.out.println("************************************");
     System.out.printf("Penghasilan Neto: %.2f\n",
-        kalkulasiPenghasilanNeto(gajiKotor, biayaJabatan, iuranPensiun, gajiPokok, tunjanganAnak, tunjanganKeluarga,
-            tunjanganUmumJabatan, tunjanganBeras, masaKerja, tipeGolongan, golonganPangkat, jumlahAnak,
-            statusPernikahan));
+        kalkulasiPenghasilanNeto(gajiKotor, biayaJabatan, iuranPensiun));
     System.out.printf("Neto per tahun: %.2f\n",
         kalkulasiPenghasilanNetoPerTahun(penghasilanNeto));
     System.out.printf("Biaya Jabatan: %.2f\n",
-        kalkulasiBiayaJabatan(kalkulasiGajiKotor(jumlahAnak, jumlahAnak, jumlahAnak,
-            jumlahAnak,
-            indexStatusPernikahan, masaKerja, tipeGolongan, golonganPangkat, jumlahAnak,
-            statusPernikahan)));
+        kalkulasiBiayaJabatan(gajiKotor));
     System.out.printf("Biaya Iuran Pensiun: %.2f\n",
         kalkulasiIuranPensiun(gajiPokok, tunjanganAnak, tunjanganKeluarga));
     System.out.printf("Potongan gaji PPH21: %.2f\n",

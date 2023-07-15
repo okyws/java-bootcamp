@@ -512,7 +512,7 @@ public class GajiPNS {
       double tunjanganBeras, int masaKerja,
       String tipeGolongan, int golonganPangkat, double penghasilanNeto) {
 
-    double ptkp = kalkulasiPTKP(jumlahAnak);
+    double ptkp = kalkulasiPTKP(jumlahAnak, statusPernikahan);
 
     int penghasilanNetoPerTahun = (int) (kalkulasiPenghasilanNetoPerTahun(penghasilanNeto));
 
@@ -526,7 +526,7 @@ public class GajiPNS {
   }
 
   // kalkulasi ptkp
-  public static double kalkulasiPTKP(int jumlahAnak) {
+  public static double kalkulasiPTKP(int jumlahAnak, String statusPernikahan) {
     int ptkpDiriSendiri = 36000000;
     int ptkpIstriSuami = 3000000;
     int ptkpPerAnak = 3000000;
@@ -534,6 +534,16 @@ public class GajiPNS {
 
     double ptkp = ptkpDiriSendiri + ptkpIstriSuami + (ptkpPerAnak * Math.min(jumlahAnak, maxJumlahAnak));
     return ptkp;
+  }
+
+  // hitung ptkp istri suami
+  public static double hitungPTKPIstriSuami(String statusPernikahan) {
+    int ptkpIstriSuami = 0;
+    if (statusPernikahan.equalsIgnoreCase("Kawin")) {
+      ptkpIstriSuami = 3000000;
+    }
+
+    return ptkpIstriSuami;
   }
 
   // kalkulasi Penghasilan Kena Pajak
@@ -553,8 +563,9 @@ public class GajiPNS {
   // kalkulate jumlah potongan untuk pph
   public static double kalkulateJumlahPotonganPPH21(double potonganPPH, double potonganIWP, double potonganTaperum) {
     double jumlahPotonganPPH21 = potonganPPH + potonganIWP + potonganTaperum;
-    System.out.printf("Potongan: %.2f %.2f %.2f %.2f\n", jumlahPotonganPPH21, potonganPPH, potonganIWP,
-        potonganTaperum);
+    // System.out.printf("Potongan: %.2f %.2f %.2f %.2f\n", jumlahPotonganPPH21,
+    // potonganPPH, potonganIWP,
+    // potonganTaperum);
     return jumlahPotonganPPH21;
   }
 
