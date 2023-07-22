@@ -13,7 +13,8 @@ public class MainApp {
      * person.country = "USA";
      *
      * untuk mengakses attribute tersebut kita harus menggunakan setter dan getter
-     * yang sudah kita buat di dalam class Person jika kita menggunakan Polymorphism
+     * yang sudah kita buat di dalam class Person jika kita menggunakan
+     * Encapsulation
      */
 
     // Set Attribute Value Directly using Setter
