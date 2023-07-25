@@ -32,16 +32,16 @@ public class Member {
     return name;
   }
 
-  public String setName(String name) {
-    return this.name = name;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getAddress() {
     return address;
   }
 
-  public String setAddress(String address) {
-    return this.address = address;
+  public void setAddress(String address) {
+    this.address = address;
   }
 
   // Method / Function

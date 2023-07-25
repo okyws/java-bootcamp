@@ -42,15 +42,15 @@ public abstract class Book {
     return author;
   }
 
-  public String setAuthor(String author) {
-    return this.author = author;
+  public void setAuthor(String author) {
+    this.author = author;
   }
 
   public int getPrice() {
     return price;
   }
 
-  public int setPrice(int price) {
-    return this.price = price;
+  public void setPrice(int price) {
+    this.price = price;
   }
 }

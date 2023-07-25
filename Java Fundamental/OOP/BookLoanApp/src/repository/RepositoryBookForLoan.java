@@ -3,42 +3,62 @@ package repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import childs.BookForLoan;
 import childs.Comic;
+import childs.LoanDetail;
 import childs.Novel;
+import parents.BookForLoan;
 
 public class RepositoryBookForLoan {
-  // Attribute / Field / Properties
   private List<BookForLoan> books;
   private List<BookForLoan> loanedBooks;
+  private List<LoanDetail> loanDetails;
 
   // Constructor Default
   public RepositoryBookForLoan() {
     super();
   }
 
-  // Constructor Dengan Parameter
-  public RepositoryBookForLoan(List<BookForLoan> books) {
+  public RepositoryBookForLoan(ArrayList<BookForLoan> arrayList) {
     super();
     this.books = new ArrayList<>();
-    this.books.add(new Comic("Comic-001", "Uzumaki Naruto", "Masashi Kisimoto", 55000, 0, 10, "Shounen"));
-    this.books.add(new Comic("Comic-002", "The Worst Client", "Masashi Kisimoto", 35000, 0, 20, "Shounen"));
-    this.books.add(new Comic("Comic-003", "For the Sake of Dreams...!!", "Masashi Kisimoto", 35000, 0, 15, "Shounen"));
+    this.loanedBooks = new ArrayList<>();
+    this.loanDetails = new ArrayList<>();
+    initializeBooks();
+  }
+
+  // Method to initialize the book list
+  private void initializeBooks() {
+    this.books.add(new Comic("Comic-001", "Uzumaki Naruto", "Masashi Kisimoto", 55000, 0, 10, 0, "Shounen"));
+    this.books.add(new Comic("Comic-002", "The Worst Client", "Masashi Kisimoto", 35000, 0, 20, 0, "Shounen"));
+    this.books
+        .add(new Comic("Comic-003", "For the Sake of Dreams...!!", "Masashi Kisimoto", 35000, 0, 15, 0, "Shounen"));
     this.books.add(new Comic("Comic-004", "Hunter X Hunter: The Day of Departure", "Yoshihiro Togashi", 50000, 0, 15,
-        "Fantasy"));
+        0, "Fantasy"));
     this.books.add(new Comic("Comic-005", "Hunter X Hunter: A Struggle in the Mist", "Yoshihiro Togashi", 80000, 0, 25,
-        "Fantasy"));
+        0, "Fantasy"));
     this.books
-        .add(new Novel("Novel-001", "Harry Potter and the Philosopher's Stone", "J.K Rowling", 150000, 0, 10, true));
+        .add(new Novel("Novel-001", "Harry Potter and the Philosopher's Stone", "J.K Rowling", 150000, 0, 10, 0, true));
     this.books
-        .add(new Novel("Novel-002", "Harry Potter and the Chamber of Secrets", "J.K Rowling", 150000, 0, 10, true));
+        .add(new Novel("Novel-002", "Harry Potter and the Chamber of Secrets", "J.K Rowling", 150000, 0, 10, 0, true));
     this.books
-        .add(new Novel("Novel-003", "Harry Potter and the Prisoner of Azkaban", "J.K Rowling", 200000, 0, 15, true));
-    this.books.add(new Novel("Novel-004", "Ayah Aku Berbeda", "Tere Liye", 35000, 0, 15, false));
-    this.books.add(new Novel("Novel-005", "Madre", "Dee Lestari", 80000, 0, 10, false));
+        .add(new Novel("Novel-003", "Harry Potter and the Prisoner of Azkaban", "J.K Rowling", 200000, 0, 15, 0, true));
+    this.books.add(new Novel("Novel-004", "Ayah Aku Berbeda", "Tere Liye", 35000, 0, 15, 0, false));
+    this.books.add(new Novel("Novel-005", "Madre", "Dee Lestari", 80000, 0, 10, 0, false));
   }
 
   public List<BookForLoan> getAllBookForLoan() {
+    List<BookForLoan> allBooks = new ArrayList<>(books);
+    allBooks.addAll(loanedBooks);
+    displayBooks(allBooks);
+    return allBooks;
+  }
+
+  public List<BookForLoan> getLoanedBooks() {
+    return loanedBooks;
+  }
+
+  // Method to display the book list
+  public void displayBooks(List<BookForLoan> bookList) {
     StringBuilder sb = new StringBuilder();
     sb.append(
         "==========================================================================================================================================\n");
@@ -46,7 +66,7 @@ public class RepositoryBookForLoan {
     sb.append(
         "==========================================================================================================================================\n");
     int i = 1;
-    for (BookForLoan book : books) {
+    for (BookForLoan book : bookList) {
       sb.append(String.format("|| %2d ", i++));
       sb.append("||\t");
       sb.append(String.format("%-16s", book.getBookID()));
@@ -56,60 +76,148 @@ public class RepositoryBookForLoan {
       sb.append(String.format("%-24s", book.getAuthor()));
       sb.append("||\t");
       sb.append(String.format("%-8s", book.getStock()));
-      // double bookLoanPrice = book.calculateBookLoanPrice();
-      // sb.append(String.format("%-12s", bookLoanPrice));
+      double loanPrice = book.calculateBookLoanPrice();
+      sb.append("||\t");
+      sb.append(String.format("%-8.2f", loanPrice));
       sb.append("||\n");
     }
     sb.append(
         "==========================================================================================================================================\n");
     System.out.print(sb.toString());
-
-    this.books.addAll(loanedBooks);
-    return books;
   }
 
-  public void setBooks(List<BookForLoan> books) {
-    this.books = books;
-  }
+  public void displayLoanedBook() {
+    if (loanDetails.isEmpty()) {
+      System.out.println("No books have been loaned.");
+      return;
+    }
 
-  // cari dengan index
-  public BookForLoan getBookByIndex(int index) {
-    return books.get(index - 1);
-  }
-
-  // cari dengan ID Buku
-  public BookForLoan getBook(String bookID) {
-    BookForLoan book = null;
-    for (int i = 0; i < books.size(); i++) {
-      if (books.get(i).getBookID().equals(bookID)) {
-        book = books.get(i);
+    System.out
+        .println("==============================================================================================");
+    System.out.println("|| No ||\tLoan Id\t\t||\tBook Id\t\t||\t\t\t\tTitle\t\t\t\t||");
+    System.out
+        .println("==============================================================================================");
+    int i = 1;
+    for (LoanDetail loanDetail : loanDetails) {
+      BookForLoan book = this.getIDBook(loanDetail.getBookId());
+      if (book != null) {
+        System.out.printf("|| %2d ||\t%s\t||\t%-16s\t||\t%-48s\t||\n", i++, loanDetail.getLoanId(), book.getBookID(),
+            book.getTitle());
       }
     }
-    return book;
+    System.out
+        .println("==============================================================================================");
   }
 
-  public int getBookIndex(String bookID) {
-    int index = -1;
-    for (int i = 0; i < books.size(); i++) {
-      if (books.get(i).getBookID().equals(bookID)) {
-        index = i;
+  public void displayLoanDetails() {
+    if (loanDetails.isEmpty()) {
+      System.out.println("No books have been loaned.");
+      return;
+    }
+
+    StringBuilder sb = new StringBuilder();
+    sb.append(
+        "==========================================================================================================================================\n");
+    sb.append(
+        "|| No ||\tLoan Id\t|| Member Name\t|| Book Id\t|| Title\t|| Loan Book Price\t|| Loan Duration\t|| Loan Fee ||\n");
+    sb.append(
+        "==========================================================================================================================================\n");
+    int i = 1;
+    for (LoanDetail loanDetail : loanDetails) {
+      BookForLoan book = getIDBook(loanDetail.getBookId());
+      if (book != null) {
+        double loanFee = loanDetail.calculateLoanFee();
+        sb.append(String.format("|| %2d ", i++));
+        sb.append("||\t");
+        sb.append(String.format("%-8s", loanDetail.getLoanId()));
+        sb.append("||\t");
+        sb.append(String.format("%-12s", loanDetail.getMemberName()));
+        sb.append("||\t");
+        sb.append(String.format("%-12s", book.getBookID()));
+        sb.append("||\t");
+        sb.append(String.format("%-39s", book.getTitle()));
+        sb.append("||\t");
+        sb.append(String.format("%-6.2f", loanDetail.getLoanBookPrice()));
+        sb.append("||\t");
+        sb.append(String.format("%-7s", loanDetail.getLoanDuration()));
+        sb.append("||\t");
+        sb.append(String.format("%-12.2f", loanFee));
+        sb.append("||\n");
       }
     }
-    return index;
+    System.out.print(sb.toString());
   }
 
-  public void updateStockBook(String bookID, int stock) {
-    int index = getBookIndex(bookID);
-    if (index != -1) {
-      books.get(index).setStock(stock - 1);
+  public void addLoanDetail(LoanDetail loanDetail) {
+    loanDetails.add(loanDetail);
+  }
+
+  public void updateBookStock(String bookID) {
+    BookForLoan selectedBook = null;
+
+    for (BookForLoan book : books) {
+      if (book.getBookID().equals(bookID)) {
+        selectedBook = book;
+        break;
+      }
+    }
+
+    if (selectedBook != null) {
+      int currentStock = selectedBook.getStock();
+      if (currentStock > 0) {
+        selectedBook.setStock(currentStock - 1);
+      } else {
+        System.out.println("Book is out of stock and cannot be loaned.");
+      }
+    } else {
+      System.out.println("Book not found. Please enter a valid Book ID.");
     }
   }
 
-  public void updateLoanPriceBook(String bookID, double loanPrice) {
-    int index = getBookIndex(bookID);
-    if (index != -1) {
-      books.get(index).setBookLoanPrice(loanPrice);
+  public void returnBook(String bookID) {
+    LoanDetail loanDetail = null;
+    for (LoanDetail loan : loanDetails) {
+      if (loan.getLoanId().equals(bookID)) {
+        loanDetail = loan;
+        break;
+      }
+    }
+
+    if (loanDetail != null) {
+      String bookId = loanDetail.getBookId();
+      BookForLoan book = getIDBook(bookId);
+      if (book != null) {
+        int currentStock = book.getStock();
+        book.setStock(currentStock + 1);
+        loanDetails.remove(loanDetail);
+        System.out.println("Book with Loan Id " + loanDetail.getLoanId() + " has been returned.");
+      } else {
+        System.out.println("Book not found. Please check the Book Id.");
+      }
+    } else {
+      System.out.println("Loan Detail not found. Please check the Loan Id.");
     }
   }
 
+  public LoanDetail getLoanDetailById(String loanID) {
+    for (LoanDetail loanDetail : loanDetails) {
+      if (loanDetail.getLoanId().equals(loanID)) {
+        return loanDetail;
+      }
+    }
+    return null;
+  }
+
+  public void remove(LoanDetail loanDetail) {
+    loanDetails.remove(loanDetail);
+  }
+
+  public BookForLoan getIDBook(String bookID) {
+    for (BookForLoan bookForLoan : books) {
+      if (bookForLoan.getBookID().equals(bookID)) {
+        return bookForLoan;
+      }
+    }
+    return null;
+  }
 }

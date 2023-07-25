@@ -1,12 +1,12 @@
-package childs;
+package parents;
 
 import interfaces.InterfaceLoanPrice;
-import parents.Book;
 
 public abstract class BookForLoan extends Book implements InterfaceLoanPrice {
   // Attribute / Field / Properties
-  double bookLoanPrice;
-  int stock;
+  protected double bookLoanPrice;
+  private int stock;
+  protected int totalStock;
 
   // Constructor Default
   public BookForLoan() {
@@ -14,10 +14,12 @@ public abstract class BookForLoan extends Book implements InterfaceLoanPrice {
   }
 
   // Constructor Dengan Parameter
-  public BookForLoan(String bookID, String title, String author, int price, double bookLoanPrice, int stock) {
+  public BookForLoan(String bookID, String title, String author, int price, double bookLoanPrice, int stock,
+      int totalStock) {
     super(bookID, title, author, price);
     this.bookLoanPrice = bookLoanPrice;
     this.stock = stock;
+    this.totalStock = stock;
   }
 
   // Getter & Setter
@@ -33,7 +35,15 @@ public abstract class BookForLoan extends Book implements InterfaceLoanPrice {
     return stock;
   }
 
-  public int setStock(int stock) {
-    return this.stock = stock;
+  public void setStock(int stock) {
+    this.stock = stock;
+  }
+
+  public int getTotalStock() {
+    return totalStock;
+  }
+
+  public void setTotalStock(int totalStock) {
+    this.totalStock = totalStock;
   }
 }

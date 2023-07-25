@@ -1,5 +1,7 @@
 package childs;
 
+import parents.BookForLoan;
+
 public class Comic extends BookForLoan {
   // Attribute / Field / Properties
   private String genre;
@@ -10,8 +12,9 @@ public class Comic extends BookForLoan {
   }
 
   // Constructor Dengan Parameter
-  public Comic(String bookID, String title, String author, int price, double bookLoanPrice, int stock, String genre) {
-    super(bookID, title, author, price, bookLoanPrice, stock);
+  public Comic(String bookID, String title, String author, int price, double bookLoanPrice, int stock, int totalStock,
+      String genre) {
+    super(bookID, title, author, price, bookLoanPrice, stock, totalStock);
     this.genre = genre;
   }
 
@@ -20,14 +23,14 @@ public class Comic extends BookForLoan {
     return genre;
   }
 
-  public String setGenre(String genre) {
-    return this.genre = genre;
+  public void setGenre(String genre) {
+    this.genre = genre;
   }
 
   // Method / Function
   @Override
   public double calculateBookLoanPrice() {
-    double rateStockBookPercentage = (this.stock < 10) ? 0.05 : 0.03;
+    double rateStockBookPercentage = (this.getStock() < 10) ? 0.05 : 0.03;
     double rateTypeBookPercentage = 0.1;
     double bookLoanPrice = (rateStockBookPercentage + rateTypeBookPercentage) * this.price;
     return bookLoanPrice;
@@ -37,10 +40,11 @@ public class Comic extends BookForLoan {
     this.bookLoanPrice = calculateBookLoanPrice();
   }
 
+  // dipakai untuk keperluan debug
   @Override
   public String toString() {
     return "Comic [bookID=" + this.getBookID() + ", title=" + this.getTitle() + ", author=" + this.getAuthor()
         + ", price=" + this.getPrice()
-        + ", bookLoanPrice=" + this.bookLoanPrice + ", stock=" + stock + ", genre=" + genre + "]";
+        + ", bookLoanPrice=" + this.bookLoanPrice + ", stock=" + getStock() + ", genre=" + genre + "]";
   }
 }

@@ -1,5 +1,6 @@
 package childs;
 
+import parents.BookForLoan;
 import parents.Member;
 
 public class LoanBookOrder {
@@ -48,10 +49,11 @@ public class LoanBookOrder {
     return loanPeriod;
   }
 
-  public int setLoanPeriod(int loanPeriod) {
-    return this.loanPeriod = loanPeriod;
+  public void setLoanPeriod(int loanPeriod) {
+    this.loanPeriod = loanPeriod;
   }
 
+  // dipakai untuk keperluan debug
   @Override
   public String toString() {
     return "LoanBookOrder [loanID=" + loanID + ", member=" + member + ", book=" + books + ", loanPeriod=" + loanPeriod

@@ -1,18 +1,24 @@
 package parents;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import childs.BookForLoan;
+import childs.LoanDetail;
 import interfaces.IBackToMenu;
 import repository.RepositoryBookForLoan;
 import repository.RepositoryMember;
 
 public class Menu implements IBackToMenu {
 
-  public static Scanner input = new Scanner(System.in);
+  private static Scanner input = new Scanner(System.in);
+  private RepositoryBookForLoan repositoryBookForLoan = new RepositoryBookForLoan(new ArrayList<BookForLoan>());
+  private RepositoryMember repositoryMember = new RepositoryMember(new ArrayList<Member>());
+  private List<BookForLoan> loanedBooks = new ArrayList<>();
+  private static AtomicInteger nextLoanId = new AtomicInteger(1);
 
-  public static void printMainMenu() {
+  public void printMainMenu() {
     System.out.println("=============================");
     System.out.println("Aplikasi Rental Buku Cucux");
     System.out.println("========= Main Menu =========");
@@ -26,56 +32,8 @@ public class Menu implements IBackToMenu {
     System.out.print("Pilih menu: ");
   }
 
-  public static void clearScreen() {
-    try {
-      // tambah delay 1 detik
-      Thread.sleep(1000);
-      System.out.print("\033\143");
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void mainMenu(boolean isLooping) {
-    while (isLooping) {
-      printMainMenu();
-      int option = Integer.parseInt(input.nextLine());
-
-      switch (option) {
-        case 1:
-          clearScreen();
-          handleOption1();
-          break;
-        case 2:
-          clearScreen();
-          handleOption2();
-          break;
-        case 3:
-          clearScreen();
-          System.out.println("Return Book");
-          return;
-        case 4:
-          clearScreen();
-          return;
-        case 5:
-          clearScreen();
-          handleOption5();
-          break;
-        case 0:
-          System.out.println("Exit");
-          input.close();
-          return;
-        default:
-          System.out.println("Input yang anda masukkan salah!");
-          clearScreen();
-          break;
-      }
-    }
-  }
-
   public void handleOption1() {
     System.out.println("Data All Book For Loan");
-    RepositoryBookForLoan repositoryBookForLoan = new RepositoryBookForLoan(new ArrayList<BookForLoan>());
     repositoryBookForLoan.getAllBookForLoan();
     System.out.println("0. Back to Main Menu");
     System.out.println(
@@ -84,9 +42,91 @@ public class Menu implements IBackToMenu {
     backToMenu();
   }
 
+  public void handleOption2() {
+    System.out.println("Loan Book");
+    repositoryBookForLoan.getAllBookForLoan();
+    System.out.print("Enter the Book ID: ");
+    String bookID = input.nextLine();
+
+    clearScreen();
+    BookForLoan bookForLoan = repositoryBookForLoan.getIDBook(bookID);
+
+    if (bookForLoan != null) {
+      repositoryMember.getAllMember();
+      System.out.print("Enter the Member ID: ");
+      String memberID = input.nextLine();
+
+      clearScreen();
+      Member member = repositoryMember.getMemberById(memberID);
+
+      if (member != null) {
+        System.out.print("Enter the Loan Duration (in days): ");
+        int loanDuration = Integer.parseInt(input.nextLine());
+
+        clearScreen();
+        double loanFee = bookForLoan.calculateBookLoanPrice() * loanDuration;
+        System.out.println("Loan Fee: " + loanFee);
+
+        System.out.println("Loan successful!");
+
+        repositoryBookForLoan.updateBookStock(bookID);
+        loanedBooks.add(bookForLoan);
+
+        String loanId = "Ord-" + String.format("%03d", nextLoanId.getAndIncrement());
+
+        LoanDetail loanDetail = new LoanDetail(memberID, bookID, loanId, loanFee, loanDuration);
+        repositoryBookForLoan.addLoanDetail(loanDetail);
+        repositoryBookForLoan.getAllBookForLoan();
+      } else {
+        System.out.println("Member not found. Please enter a valid Member ID.");
+        handleOption2();
+      }
+    } else {
+      System.out.println("Book not found. Please enter a valid Book ID.");
+      handleOption2();
+    }
+
+    System.out.println("0. Back to Main Menu");
+    System.out.println("==================================================================================");
+
+    backToMenu();
+  }
+
+  public void handleOption3() {
+    System.out.println("Return Book");
+    repositoryBookForLoan.displayLoanedBook();
+
+    System.out.print("Enter the Loan ID: ");
+    String loanID = input.nextLine();
+
+    LoanDetail loanDetail = repositoryBookForLoan.getLoanDetailById(loanID);
+
+    if (loanDetail != null) {
+      BookForLoan bookForLoan = repositoryBookForLoan.getIDBook(loanDetail.getBookId());
+
+      if (bookForLoan != null) {
+        repositoryBookForLoan.returnBook(loanID);
+        System.out.println("Book returned successfully!");
+      } else {
+        System.out.println("Book not found. Please enter a valid Book ID.");
+      }
+    } else {
+      System.out.println("Loan ID not found. Please enter a valid Loan ID.");
+    }
+
+    System.out.println("0. Back to Main Menu");
+    backToMenu();
+  }
+
+  public void handleOption4() {
+    System.out.println("Loan Book List:");
+    repositoryBookForLoan.displayLoanDetails();
+    System.out.println("0. Back to Main Menu");
+    backToMenu();
+  }
+
   public void handleOption5() {
     System.out.println("Data All Member");
-    RepositoryMember repositoryMember = new RepositoryMember(new ArrayList<Member>());
     repositoryMember.getAllMember();
     System.out.println("0. Back to Main Menu");
     System.out.println("==================================================================================");
@@ -94,40 +134,14 @@ public class Menu implements IBackToMenu {
     backToMenu();
   }
 
-  private void handleOption2() {
-    System.out.println("Loan Book");
-    RepositoryBookForLoan bookForLoan = new RepositoryBookForLoan(new ArrayList<BookForLoan>());
-    bookForLoan.getAllBookForLoan();
-    System.out.print("Enter the Book ID: ");
-    String bookID = input.nextLine();
-
-    bookForLoan.getBook(bookID);
-    bookForLoan.updateLoanPriceBook(bookID, bookForLoan.getBook(bookID).getBookLoanPrice());
-    System.out.println(bookForLoan.getBook(bookID).toString());
-
-    if (bookForLoan != null) {
-      RepositoryMember member = new RepositoryMember(new ArrayList<Member>());
-      member.getAllMember();
-      System.out.println("Enter the Member ID: ");
-      int indexMember = Integer.parseInt(input.nextLine());
-      System.out.println(member.getMemberByIndex(indexMember).toString());
-
-      if (member != null) {
-        System.out.println("Enter the Loan Duration (in days): ");
-        int loanDuration = Integer.parseInt(input.nextLine());
-
-        double loanFee = bookForLoan.getBook(bookID).calculateBookLoanPrice() * loanDuration;
-        System.out.println(loanFee);
-
-        System.out.println("Loan successful!");
-
-        bookForLoan.updateStockBook(bookID, bookForLoan.getBook(bookID).getStock());
-        bookForLoan.getAllBookForLoan();
-      }
+  // utulity method untuk clear screen
+  public void clearScreen() {
+    try {
+      Thread.sleep(1000);
+      System.out.print("\033\143");
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
-
-    System.out.println("0. Back to Main Menu");
-    backToMenu();
   }
 
   @Override
