@@ -1,7 +1,5 @@
 package childs;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class LoanDetail implements interfaces.InterfaceLoanFee {
   private String loanId;
   private String memberName;
@@ -10,16 +8,15 @@ public class LoanDetail implements interfaces.InterfaceLoanFee {
   private double loanBookPrice;
   private int loanDuration;
   private double loanFee;
-  private static AtomicInteger nextLoanId = new AtomicInteger(1);
 
   public LoanDetail() {
     super();
   }
 
-  public LoanDetail(String memberName, String bookId, String title, double loanBookPrice,
+  public LoanDetail(String loanId, String memberName, String bookId, String title, double loanBookPrice,
       int loanDuration) {
     super();
-    this.loanId = generateNextLoanId();
+    this.loanId = loanId;
     this.memberName = memberName;
     this.bookId = bookId;
     this.title = title;
@@ -86,9 +83,5 @@ public class LoanDetail implements interfaces.InterfaceLoanFee {
   public String toString() {
     return "LoanDetail [loanId=" + loanId + ", memberName=" + memberName + ", bookId=" + bookId + ", title=" + title
         + ", loanBookPrice=" + loanBookPrice + ", loanDuration=" + loanDuration + ",  loanFee=" + loanFee + "]";
-  }
-
-  private String generateNextLoanId() {
-    return "Ord-" + String.format("%03d", nextLoanId.getAndIncrement());
   }
 }

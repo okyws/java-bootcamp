@@ -76,9 +76,6 @@ public class RepositoryBookForLoan {
       sb.append(String.format("%-24s", book.getAuthor()));
       sb.append("||\t");
       sb.append(String.format("%-8s", book.getStock()));
-      double loanPrice = book.calculateBookLoanPrice();
-      sb.append("||\t");
-      sb.append(String.format("%-8.2f", loanPrice));
       sb.append("||\n");
     }
     sb.append(
@@ -92,21 +89,26 @@ public class RepositoryBookForLoan {
       return;
     }
 
-    System.out
-        .println("==============================================================================================");
-    System.out.println("|| No ||\tLoan Id\t\t||\tBook Id\t\t||\t\t\t\tTitle\t\t\t\t||");
-    System.out
-        .println("==============================================================================================");
+    StringBuilder sb = new StringBuilder();
+
+    sb.append(
+        "==================================================================================================================\n");
+    sb.append("|| No ||\tLoan Id\t\t||\tBook Id\t\t||\t\t\tTitle\t\t\t\t||\n");
+    sb.append(
+        "==================================================================================================================\n");
+
     int i = 1;
     for (LoanDetail loanDetail : loanDetails) {
-      BookForLoan book = this.getIDBook(loanDetail.getBookId());
+      BookForLoan book = this.getIDBookForLoan(loanDetail.getBookId());
       if (book != null) {
-        System.out.printf("|| %2d ||\t%s\t||\t%-16s\t||\t%-48s\t||\n", i++, loanDetail.getLoanId(), book.getBookID(),
-            book.getTitle());
+        sb.append(String.format("|| %2d ||\t%s\t\t||\t%s\t||\t%-48s||\n", i++, loanDetail.getLoanId(),
+            book.getBookID(), book.getTitle()));
       }
     }
-    System.out
-        .println("==============================================================================================");
+
+    sb.append(
+        "==================================================================================================================\n");
+    System.out.println(sb);
   }
 
   public void displayLoanDetails() {
@@ -117,14 +119,14 @@ public class RepositoryBookForLoan {
 
     StringBuilder sb = new StringBuilder();
     sb.append(
-        "==========================================================================================================================================\n");
+        "==================================================================================================================================================================\n");
     sb.append(
-        "|| No ||\tLoan Id\t|| Member Name\t|| Book Id\t|| Title\t|| Loan Book Price\t|| Loan Duration\t|| Loan Fee ||\n");
+        "|| No ||\tLoan Id\t||\t Member Name\t|| Book Id\t|| \t\t\tTitle\t\t\t|| Loan Book Price || Loan Duration || Loan Fee\t ||\n");
     sb.append(
-        "==========================================================================================================================================\n");
+        "==================================================================================================================================================================\n");
     int i = 1;
     for (LoanDetail loanDetail : loanDetails) {
-      BookForLoan book = getIDBook(loanDetail.getBookId());
+      BookForLoan book = getIDBookForLoan(loanDetail.getBookId());
       if (book != null) {
         double loanFee = loanDetail.calculateLoanFee();
         sb.append(String.format("|| %2d ", i++));
@@ -132,19 +134,22 @@ public class RepositoryBookForLoan {
         sb.append(String.format("%-8s", loanDetail.getLoanId()));
         sb.append("||\t");
         sb.append(String.format("%-12s", loanDetail.getMemberName()));
+        sb.append("\t||   ");
+        sb.append(String.format("%-8s", book.getBookID()));
+        sb.append("  ||\t");
+        sb.append(String.format("%-40s", book.getTitle()));
         sb.append("||\t");
-        sb.append(String.format("%-12s", book.getBookID()));
+        sb.append(String.format("%-10.2f", loanDetail.getLoanBookPrice()));
+        sb.append(" ||\t");
+        sb.append(String.format("%-11s", loanDetail.getLoanDuration()));
         sb.append("||\t");
-        sb.append(String.format("%-39s", book.getTitle()));
-        sb.append("||\t");
-        sb.append(String.format("%-6.2f", loanDetail.getLoanBookPrice()));
-        sb.append("||\t");
-        sb.append(String.format("%-7s", loanDetail.getLoanDuration()));
-        sb.append("||\t");
-        sb.append(String.format("%-12.2f", loanFee));
+        sb.append(String.format("%-8.2f", loanFee));
         sb.append("||\n");
       }
     }
+    sb.append(
+        "==================================================================================================================================================================\n");
+
     System.out.print(sb.toString());
   }
 
@@ -185,7 +190,7 @@ public class RepositoryBookForLoan {
 
     if (loanDetail != null) {
       String bookId = loanDetail.getBookId();
-      BookForLoan book = getIDBook(bookId);
+      BookForLoan book = getIDBookForLoan(bookId);
       if (book != null) {
         int currentStock = book.getStock();
         book.setStock(currentStock + 1);
@@ -208,11 +213,7 @@ public class RepositoryBookForLoan {
     return null;
   }
 
-  public void remove(LoanDetail loanDetail) {
-    loanDetails.remove(loanDetail);
-  }
-
-  public BookForLoan getIDBook(String bookID) {
+  public BookForLoan getIDBookForLoan(String bookID) {
     for (BookForLoan bookForLoan : books) {
       if (bookForLoan.getBookID().equals(bookID)) {
         return bookForLoan;

@@ -49,7 +49,7 @@ public class Menu implements IBackToMenu {
     String bookID = input.nextLine();
 
     clearScreen();
-    BookForLoan bookForLoan = repositoryBookForLoan.getIDBook(bookID);
+    BookForLoan bookForLoan = repositoryBookForLoan.getIDBookForLoan(bookID);
 
     if (bookForLoan != null) {
       repositoryMember.getAllMember();
@@ -64,17 +64,16 @@ public class Menu implements IBackToMenu {
         int loanDuration = Integer.parseInt(input.nextLine());
 
         clearScreen();
+        String loanId = "Ord-" + String.format("%03d", nextLoanId.getAndIncrement());
         double loanFee = bookForLoan.calculateBookLoanPrice() * loanDuration;
-        System.out.println("Loan Fee: " + loanFee);
 
+        System.out.println("Data Order: " + loanId + " Created, with Loan Fee: " + loanFee);
         System.out.println("Loan successful!");
 
         repositoryBookForLoan.updateBookStock(bookID);
         loanedBooks.add(bookForLoan);
 
-        String loanId = "Ord-" + String.format("%03d", nextLoanId.getAndIncrement());
-
-        LoanDetail loanDetail = new LoanDetail(memberID, bookID, loanId, loanFee, loanDuration);
+        LoanDetail loanDetail = new LoanDetail(loanId, memberID, bookID, loanId, loanFee, loanDuration);
         repositoryBookForLoan.addLoanDetail(loanDetail);
         repositoryBookForLoan.getAllBookForLoan();
       } else {
@@ -99,10 +98,13 @@ public class Menu implements IBackToMenu {
     System.out.print("Enter the Loan ID: ");
     String loanID = input.nextLine();
 
-    LoanDetail loanDetail = repositoryBookForLoan.getLoanDetailById(loanID);
+    if (loanID.equals("0")) {
+      backToMenu();
+    }
 
+    LoanDetail loanDetail = repositoryBookForLoan.getLoanDetailById(loanID);
     if (loanDetail != null) {
-      BookForLoan bookForLoan = repositoryBookForLoan.getIDBook(loanDetail.getBookId());
+      BookForLoan bookForLoan = repositoryBookForLoan.getIDBookForLoan(loanDetail.getBookId());
 
       if (bookForLoan != null) {
         repositoryBookForLoan.returnBook(loanID);
