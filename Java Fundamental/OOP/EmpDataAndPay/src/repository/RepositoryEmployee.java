@@ -6,35 +6,31 @@ import java.util.List;
 import parents.Employee;
 import parents.Placement;
 
+/*
+ * Penggunaan Data Dummy belum sesuai, namun jika data di input manual maka program dapat berjalan dengan baik
+ * Kendala :
+ * 1. Data Dummy ketika di load bisa muncul
+ * 2. Data inputan ketika ada dummy menjadi tidak muncul
+ * namun jika tidak ada dummy maka data inputan muncul
+ */
+
 public class RepositoryEmployee {
-  public List<Employee> employees;
+  private List<Employee> employees;
 
   public RepositoryEmployee() {
-    super();
+    this.employees = new ArrayList<>();
+    addDummyData();
   }
 
-  public RepositoryEmployee(List<Employee> employees) {
-    super();
-    this.employees = employees;
+  private void addDummyData() {
+    this.employees.add(new Employee("Emp-001", "Susi", "Bandung", 27, "Admin", new Placement("Jakarta"), 4453935.0));
+    this.employees
+        .add(new Employee("Emp-002", "Anto", "Bandung", 35, "Office Boy", new Placement("Bandung"), 3742276.0));
+    this.employees.add(
+        new Employee("Emp-003", "Riman", "Jakarta", 28, "Human Resource Dev", new Placement("Bandung"), 3742276.0));
   }
 
   public List<Employee> getAllEmployees() {
-    this.employees = new ArrayList<>();
-    this.employees.add(new Employee("Emp-001", "Susi", "Bandung", 27, "Admin", new Placement("Jakarta"), 1500));
-    this.employees.add(new Employee("Emp-002", "Anto", "Bandung", 35, "Office Boy", new Placement("Bandung"), 1000));
-    this.employees
-        .add(new Employee("Emp-003", "Riman", "Jakarta", 28, "Human Resource Dev", new Placement("Bandung"), 2000));
-
     return this.employees;
-  }
-
-  public int getIndexByEmployeeID(String employeeID) {
-    List<Employee> employees = getAllEmployees();
-    for (int i = 0; i < employees.size(); i++) {
-      if (employees.get(i).getEmployeeID().equals(employeeID)) {
-        return i;
-      }
-    }
-    return -1; // Employee not found
   }
 }

@@ -1,5 +1,8 @@
 package parents;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import childs.DataAnalyst;
 import childs.Programmer;
 import childs.ProjectLeader;
 import interfaces.IAllowance;
@@ -10,25 +13,30 @@ public class Employee extends Person implements ISalary, IAllowance {
   private String jobDescription;
   private Placement placement;
   protected double salary;
-  private static int employeeCounter = 1;
-  private static int programmerCounter = 1;
-  private static int projectLeaderCounter = 1;
+  private static final AtomicInteger employeeCounter = new AtomicInteger(1);
+  private static final AtomicInteger programmerCounter = new AtomicInteger(1);
+  private static final AtomicInteger projectLeaderCounter = new AtomicInteger(1);
+  private static final AtomicInteger dataAnalystCounter = new AtomicInteger(1);
 
   public Employee() {
     super();
     this.employeeID = generateEmployeeID(this);
   }
 
-  public Employee(String name, String address, int age, String jobDescription, Placement placement, double salary) {
+  public Employee(String name, String address, int age, String jobDescription, Placement placement) {
     super(name, address, age);
+    this.employeeID = generateEmployeeID(this);
     this.jobDescription = jobDescription;
     this.placement = placement;
-    this.salary = salary;
   }
 
   public Employee(String employeeID, String name, String address, int age, String jobDescription, Placement placement,
       double salary) {
-    super();
+    super(name, address, age);
+    this.employeeID = employeeID;
+    this.jobDescription = jobDescription;
+    this.placement = placement;
+    this.salary = salary;
   }
 
   public String getEmployeeID() {
@@ -49,7 +57,7 @@ public class Employee extends Person implements ISalary, IAllowance {
   }
 
   public void setEmployeeID(String employeeID) {
-    this.employeeID = generateEmployeeID(null);
+    this.employeeID = employeeID;
   }
 
   public void setJobDescription(String jobDescription) {
@@ -70,13 +78,16 @@ public class Employee extends Person implements ISalary, IAllowance {
 
     if (employee instanceof ProjectLeader) {
       prefix = "PL";
-      id = prefix + "-" + String.format("%03d", projectLeaderCounter++);
+      id = prefix + "-" + String.format("%03d", projectLeaderCounter.getAndIncrement());
     } else if (employee instanceof Programmer) {
       prefix = "PRO";
-      id = prefix + "-" + String.format("%03d", programmerCounter++);
+      id = prefix + "-" + String.format("%03d", programmerCounter.getAndIncrement());
+    } else if (employee instanceof DataAnalyst) {
+      prefix = "DA";
+      id = prefix + "-" + String.format("%03d", dataAnalystCounter.getAndIncrement());
     } else {
       prefix = "Emp";
-      id = prefix + "-" + String.format("%03d", employeeCounter++);
+      id = prefix + "-" + String.format("%03d", employeeCounter.getAndIncrement());
     }
     return id;
   }

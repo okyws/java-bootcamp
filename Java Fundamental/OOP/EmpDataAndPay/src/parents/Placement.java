@@ -14,7 +14,6 @@ public class Placement implements IUMKProvider {
     cityUMK.put("Jakarta", 4453935.0);
     cityUMK.put("Bekasi", 4782935.0);
     cityUMK.put("Bogor", 4330249.0);
-    cityUMK.put("1", 1000000.0);
   }
 
   public Placement() {
@@ -39,10 +38,21 @@ public class Placement implements IUMKProvider {
     return cityUMK.get(city);
   }
 
+  // jika dibutuhkan (untuk menampilkan hasil UMK dari semua kota)
   public static Map<String, Double> getAllUMK() {
     cityUMK.forEach((city, umk) -> {
       System.out.println(city + " : " + umk);
     });
     return cityUMK;
+  }
+
+  public Placement getPlacementByCity(String city) {
+    for (String placementCity : cityUMK.keySet()) {
+      if (placementCity.equalsIgnoreCase(city)) {
+        return new Placement(placementCity);
+      }
+    }
+    System.out.println("Placement not found");
+    return null;
   }
 }

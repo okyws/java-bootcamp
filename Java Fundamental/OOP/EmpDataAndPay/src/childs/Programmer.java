@@ -12,8 +12,8 @@ public class Programmer extends Employee {
   }
 
   public Programmer(String name, String address, int age, String jobDescription, Placement placement,
-      String[] programmingLanguages, int experience, double salary) {
-    super(name, address, age, jobDescription, placement, salary);
+      String[] programmingLanguages, int experience) {
+    super(name, address, age, jobDescription, placement);
     this.programmingLanguages = programmingLanguages;
     this.experience = experience;
   }
@@ -37,13 +37,13 @@ public class Programmer extends Employee {
   @Override
   public double calculateSalary() {
     double programmerUMK = 1.5;
-    return salary = super.salary * programmerUMK;
+    return salary = super.calculateSalary() * programmerUMK;
   }
 
   @Override
   public double calculateAllowance() {
-    double allowance = (this.getExperience() >= 2) ? salary * 0.2
-        : salary * 0.1;
+    double allowance = (this.getExperience() >= 2) ? super.calculateSalary() * 0.2
+        : super.calculateSalary() * 0.1;
     return allowance;
   }
 }
