@@ -13,7 +13,7 @@ public class EmployeeManagement {
     EmployeeManager employeeManager = new EmployeeManager();
     RepositoryPrinter repositoryPrinter = new RepositoryPrinter();
     repositoryPrinter.setEmployeeManager(employeeManager);
-    // employeeManager.setRepositoryPrinter(repositoryPrinter);
+    employeeManager.setRepositoryPrinter(repositoryPrinter);
 
     int choice;
     boolean isLooping = true;
