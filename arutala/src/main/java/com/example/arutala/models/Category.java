@@ -48,10 +48,6 @@ public class Category implements Serializable {
     this.description = description;
   }
 
-  public static long getSerialversionuid() {
-    return serialVersionUID;
-  }
-
   public Long getCategoryId() {
     return categoryId;
   }
