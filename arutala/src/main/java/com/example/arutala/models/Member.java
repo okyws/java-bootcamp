@@ -1,7 +1,5 @@
 package com.example.arutala.models;
 
-import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,15 +9,13 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "member")
-public class Member implements Serializable {
-  private static final long serialVersionUID = -2343243243242432341L;
-
+public class Member {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long memberId;
 
   @Column(nullable = false)
-  private String name;
+  private String memberName;
 
   @Column()
   private String address;
@@ -28,15 +24,11 @@ public class Member implements Serializable {
     super();
   }
 
-  public Member(Long memberId, String name, String address) {
+  public Member(Long memberId, String memberName, String address) {
     super();
     this.memberId = memberId;
-    this.name = name;
+    this.memberName = memberName;
     this.address = address;
-  }
-
-  public static long getSerialversionuid() {
-    return serialVersionUID;
   }
 
   public Long getMemberId() {
@@ -47,12 +39,12 @@ public class Member implements Serializable {
     this.memberId = memberId;
   }
 
-  public String getName() {
-    return name;
+  public String getMemberName() {
+    return memberName;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setMemberName(String memberName) {
+    this.memberName = memberName;
   }
 
   public String getAddress() {

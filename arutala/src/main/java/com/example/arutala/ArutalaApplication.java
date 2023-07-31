@@ -11,5 +11,4 @@ public class ArutalaApplication {
   public static void main(String[] args) {
     SpringApplication.run(ArutalaApplication.class, args);
   }
-
 }
