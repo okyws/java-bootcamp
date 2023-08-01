@@ -9,7 +9,7 @@ import parents.EmployeeManager;
 import parents.Placement;
 import repository.RepositoryPrinter;
 
-public class EmployeeAction {
+public class MenuEmployeeAction {
   public static void addEmployee(RepositoryPrinter repositoryPrinter, EmployeeManager employeeManager) {
     boolean isLooping = true;
 

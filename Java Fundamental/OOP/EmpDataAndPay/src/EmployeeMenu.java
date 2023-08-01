@@ -1,4 +1,4 @@
-import menu.EmployeeAction;
+import menu.MenuEmployeeAction;
 import menu.MenuUtils;
 import parents.EmployeeManager;
 import repository.RepositoryPrinter;
@@ -30,11 +30,11 @@ public class EmployeeMenu {
         case 1:
           System.out.println("\nCurrent employees in the system: ");
           repositoryPrinter.printAllEmployees();
-          EmployeeAction.addEmployee(repositoryPrinter, employeeManager);
+          MenuEmployeeAction.addEmployee(repositoryPrinter, employeeManager);
           break;
         case 2:
           repositoryPrinter.printAllEmployees();
-          EmployeeAction.editEmployee(employeeManager);
+          MenuEmployeeAction.editEmployee(employeeManager);
           MenuUtils.waitForBackToMenu();
           break;
         case 3:
@@ -50,12 +50,12 @@ public class EmployeeMenu {
         case 5:
           System.out.println("\nLatest employees data in the system: ");
           repositoryPrinter.printAllEmployees();
-          EmployeeAction.deleteEmployee(employeeManager);
+          MenuEmployeeAction.deleteEmployee(employeeManager);
           break;
         case 6:
           System.out.println("\nLatest employees data in the system: ");
           repositoryPrinter.printAllEmployees();
-          EmployeeAction.searchEmployee(employeeManager);
+          MenuEmployeeAction.searchEmployee(employeeManager);
           break;
         case 0:
           System.out.println("Exiting the program...");

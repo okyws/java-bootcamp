@@ -8,8 +8,7 @@ public class MenuUtils {
   public static Scanner scanner = new Scanner(System.in);
 
   protected static String getUserInput() {
-    String input = scanner.nextLine();
-    return input;
+    return scanner.nextLine();
   }
 
   protected static String getValidName() {
@@ -61,11 +60,12 @@ public class MenuUtils {
     int age;
     while (true) {
       System.out.print("Input your age: ");
-      age = getValidNumericInput();
-      if (age < 18 || age > 120) {
-        System.out.println("Invalid age. Please enter a valid age between 18 and 120.");
-      } else {
+      String input = getUserInput();
+      if (input.matches("^(1[8-9]|[2-9][0-9]|1[01][0-9]|120)$")) {
+        age = Integer.parseInt(input);
         break;
+      } else {
+        System.out.println("Invalid age. Please enter a valid age between 18 and 120.");
       }
     }
     return age;
@@ -76,7 +76,7 @@ public class MenuUtils {
     while (!isValidCity(input)) {
       System.out.println("Invalid input. Please enter a valid city.");
       System.out.print("Input your city: ");
-      input = scanner.nextLine();
+      input = getUserInput();
     }
 
     return input;
