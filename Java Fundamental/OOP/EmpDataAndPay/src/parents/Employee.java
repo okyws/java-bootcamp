@@ -5,15 +5,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import childs.DataAnalyst;
 import childs.Programmer;
 import childs.ProjectLeader;
-import interfaces.IAllowance;
 import interfaces.ISalary;
 
-public class Employee extends Person implements ISalary, IAllowance {
+public class Employee extends Person implements ISalary {
   private String employeeID;
   private String jobDescription;
   private Placement placement;
   protected double salary;
-  private static final AtomicInteger employeeCounter = new AtomicInteger(1);
+  private static final AtomicInteger employeeCounter = new AtomicInteger(4);
   private static final AtomicInteger programmerCounter = new AtomicInteger(1);
   private static final AtomicInteger projectLeaderCounter = new AtomicInteger(1);
   private static final AtomicInteger dataAnalystCounter = new AtomicInteger(1);
@@ -74,7 +73,7 @@ public class Employee extends Person implements ISalary, IAllowance {
 
   public String generateEmployeeID(Employee employee) {
     String prefix;
-    String id;
+    String id = "";
 
     if (employee instanceof ProjectLeader) {
       prefix = "PL";
@@ -83,23 +82,18 @@ public class Employee extends Person implements ISalary, IAllowance {
       prefix = "PRO";
       id = prefix + "-" + String.format("%03d", programmerCounter.getAndIncrement());
     } else if (employee instanceof DataAnalyst) {
-      prefix = "DA";
+      prefix = "AL";
       id = prefix + "-" + String.format("%03d", dataAnalystCounter.getAndIncrement());
-    } else {
+    } else if (employee instanceof Employee) {
       prefix = "Emp";
       id = prefix + "-" + String.format("%03d", employeeCounter.getAndIncrement());
     }
+
     return id;
   }
 
   @Override
   public double calculateSalary() {
     return salary = this.placement.getUMK();
-  }
-
-  @Override
-  public double calculateAllowance() {
-    double allowance = salary * 0.0;
-    return allowance;
   }
 }

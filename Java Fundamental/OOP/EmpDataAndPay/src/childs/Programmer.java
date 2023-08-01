@@ -1,9 +1,10 @@
 package childs;
 
+import interfaces.IAllowance;
 import parents.Employee;
 import parents.Placement;
 
-public class Programmer extends Employee {
+public class Programmer extends Employee implements IAllowance {
   private String[] programmingLanguages;
   private int experience;
 
@@ -12,6 +13,13 @@ public class Programmer extends Employee {
   }
 
   public Programmer(String name, String address, int age, String jobDescription, Placement placement,
+      String[] programmingLanguages, int experience) {
+    super(name, address, age, jobDescription, placement);
+    this.programmingLanguages = programmingLanguages;
+    this.experience = experience;
+  }
+
+  public Programmer(String employeeID, String name, String address, int age, String jobDescription, Placement placement,
       String[] programmingLanguages, int experience) {
     super(name, address, age, jobDescription, placement);
     this.programmingLanguages = programmingLanguages;

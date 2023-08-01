@@ -2,10 +2,13 @@ package parents;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import repository.RepositoryEmployee;
 import repository.RepositoryPrinter;
 
 public class EmployeeManager {
   private List<Employee> employees;
+  private RepositoryEmployee repoEmployee = new RepositoryEmployee();
   private RepositoryPrinter repositoryPrinter;
 
   public EmployeeManager() {
@@ -28,6 +31,7 @@ public class EmployeeManager {
   }
 
   public List<Employee> getEmployeeByCity(String city) {
+    getAllEmployees();
     List<Employee> searchResults = new ArrayList<>();
 
     for (Employee employee : employees) {
@@ -39,7 +43,9 @@ public class EmployeeManager {
   }
 
   public List<Employee> getAllEmployees() {
-    if (repositoryPrinter != null) {
+    if (employees.isEmpty()) {
+      employees.addAll(repoEmployee.getAllDummEmployees());
+    } else if (repositoryPrinter != null) {
       repositoryPrinter.printAllEmployees();
     }
     return employees;
@@ -66,8 +72,5 @@ public class EmployeeManager {
       }
     }
     return false;
-  }
-
-  public void setRepositoryPrinter(RepositoryPrinter repositoryPrinter) {
   }
 }

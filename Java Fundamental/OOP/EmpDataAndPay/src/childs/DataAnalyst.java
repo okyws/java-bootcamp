@@ -1,14 +1,20 @@
 package childs;
 
+import interfaces.IAllowance;
 import parents.Employee;
 import parents.Placement;
 
-public class DataAnalyst extends Employee {
+public class DataAnalyst extends Employee implements IAllowance {
   public DataAnalyst() {
     super();
   }
 
   public DataAnalyst(String name, String address, int age, String jobDescription, Placement placement) {
+    super(name, address, age, jobDescription, placement);
+  }
+
+  public DataAnalyst(String employeeID, String name, String address, int age, String jobDescription,
+      Placement placement) {
     super(name, address, age, jobDescription, placement);
   }
 

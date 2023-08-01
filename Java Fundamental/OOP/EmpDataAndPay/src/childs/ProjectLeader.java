@@ -1,9 +1,10 @@
 package childs;
 
+import interfaces.IAllowance;
 import parents.Employee;
 import parents.Placement;
 
-public class ProjectLeader extends Employee {
+public class ProjectLeader extends Employee implements IAllowance {
   private int totalProject;
 
   public ProjectLeader() {
@@ -11,6 +12,13 @@ public class ProjectLeader extends Employee {
   }
 
   public ProjectLeader(String name, String address, int age, String jobDescription, Placement placement,
+      int totalProject) {
+    super(name, address, age, jobDescription, placement);
+    this.totalProject = totalProject;
+  }
+
+  public ProjectLeader(String employeeID, String name, String address, int age, String jobDescription,
+      Placement placement,
       int totalProject) {
     super(name, address, age, jobDescription, placement);
     this.totalProject = totalProject;
