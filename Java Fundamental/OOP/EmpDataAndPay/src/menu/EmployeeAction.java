@@ -16,14 +16,14 @@ public class EmployeeAction {
     while (isLooping) {
       System.out.println("Adding a new employee to the system");
       System.out.print("Input your name: ");
-      String name = MenuUtils.getUserInput();
+      String name = MenuUtils.getValidName();
       System.out.print("Input your address: ");
-      String address = MenuUtils.getUserInput();
+      String address = MenuUtils.getValidAddress();
       int age = MenuUtils.getValidAgeFromUser();
       System.out.print("Input your job description: ");
       String jobDescription = MenuUtils.getUserInput();
       System.out.print("Input your placement city: ");
-      String city = MenuUtils.getUserInput();
+      String city = MenuUtils.getValidCity();
       int employeeType = MenuUtils.getEmployeeTypeFromUser();
 
       employeeManager.getAllEmployees();
@@ -129,15 +129,11 @@ public class EmployeeAction {
     RepositoryPrinter repositoryPrinter = new RepositoryPrinter();
     repositoryPrinter.setEmployeeManager(employeeManager);
 
-    try {
-      if (employees.isEmpty()) {
-        System.out.println("No employees found in the city: " + city);
-      } else {
-        System.out.println("\nEmployees in the city: " + city);
-        repositoryPrinter.printEmployeesByCity(employees);
-      }
-    } catch (Exception NullPointerException) {
+    if (employees.isEmpty()) {
       System.out.println("No employees found in the city: " + city);
+    } else {
+      System.out.println("\nEmployees in the city: " + city);
+      repositoryPrinter.printEmployeesByCity(employees);
     }
 
     MenuUtils.waitForBackToMenu();

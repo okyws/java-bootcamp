@@ -2,11 +2,46 @@ package menu;
 
 import java.util.Scanner;
 
+import parents.Placement;
+
 public class MenuUtils {
   public static Scanner scanner = new Scanner(System.in);
 
   protected static String getUserInput() {
-    return scanner.nextLine();
+    String input = scanner.nextLine();
+    return input;
+  }
+
+  protected static String getValidName() {
+    String input = scanner.nextLine();
+    while (!isValidName(input)) {
+      System.out.println("Invalid input. Please enter a valid name (3-30 characters).");
+      System.out.print("Input your name: ");
+      input = getUserInput();
+    }
+
+    return input;
+  }
+
+  protected static boolean isValidName(String input) {
+    String regex = "^[A-Za-z\\s]{3,30}$";
+    return input.matches(regex);
+  }
+
+  protected static String getValidAddress() {
+    String input = scanner.nextLine();
+    while (!isValidAddress(input)) {
+      System.out.println("Invalid input. Please enter a valid address.");
+      System.out.print("Input your address: ");
+      input = getUserInput();
+    }
+
+    return input;
+  }
+
+  public static boolean isValidAddress(String address) {
+    String regex = "^[A-Za-z0-9\\s.,-]+$";
+    return address.matches(regex);
   }
 
   protected static int getValidNumericInput() {
@@ -34,6 +69,21 @@ public class MenuUtils {
       }
     }
     return age;
+  }
+
+  protected static String getValidCity() {
+    String input = scanner.nextLine();
+    while (!isValidCity(input)) {
+      System.out.println("Invalid input. Please enter a valid city.");
+      System.out.print("Input your city: ");
+      input = scanner.nextLine();
+    }
+
+    return input;
+  }
+
+  private static boolean isValidCity(String city) {
+    return Placement.getCityUMK().containsKey(city);
   }
 
   protected static int getEmployeeTypeFromUser() {
