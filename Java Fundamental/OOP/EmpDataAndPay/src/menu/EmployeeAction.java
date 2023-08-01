@@ -12,7 +12,9 @@ import repository.RepositoryPrinter;
 public class EmployeeAction {
   public static void addEmployee(RepositoryPrinter repositoryPrinter, EmployeeManager employeeManager) {
     boolean isLooping = true;
+
     while (isLooping) {
+      System.out.println("Adding a new employee to the system");
       System.out.print("Input your name: ");
       String name = MenuUtils.getUserInput();
       System.out.print("Input your address: ");
@@ -62,32 +64,35 @@ public class EmployeeAction {
       employeeManager.addEmployee(employee);
 
       System.out.println("Employee added successfully!");
-
       System.out.print("Do you want to add another employee? (Y/N): ");
       isLooping = MenuUtils.yesOrNo(isLooping);
     }
     repositoryPrinter.printAllEmployees();
+    System.out.println();
   }
 
   public static void editEmployee(EmployeeManager employeeManager) {
-    System.out.print("Enter the Employee ID to edit their Placement: ");
-    String employeeId = MenuUtils.getUserInput();
-
+    String employeeId, newCity;
+    boolean isUpdated;
     Placement newPlacement = new Placement();
-    String newCity;
+
+    do {
+      System.out.print("Enter the Employee ID to edit their Placement: ");
+      employeeId = MenuUtils.getUserInput();
+    } while (employeeManager.getEmployeeByEmployeeId(employeeId) == null);
+
     while (true) {
       System.out.print("Enter the new Placement city: ");
       newCity = MenuUtils.scanner.nextLine().trim();
-      if (MenuUtils.isValidCity(newCity)) {
+      if (isValidCity(newCity)) {
         newPlacement.setCity(newCity);
         break;
       } else {
         System.out.println("Invalid city name. Please enter a valid city name.");
-        return;
       }
     }
 
-    boolean isUpdated = employeeManager.editEmployeePlacement(employeeId, newPlacement);
+    isUpdated = employeeManager.editEmployeePlacement(employeeId, newPlacement);
     if (isUpdated) {
       System.out.println("Employee Placement has been updated successfully!");
     } else {
@@ -95,15 +100,25 @@ public class EmployeeAction {
     }
   }
 
-  public static void deleteEmployee(EmployeeManager employeeManager) {
-    System.out.print("Enter the Employee ID to delete: ");
-    String employeeID = MenuUtils.getUserInput();
-    boolean isDeleted = employeeManager.deleteEmployee(employeeID);
+  private static boolean isValidCity(String city) {
+    return Placement.getCityUMK().containsKey(city);
+  }
 
-    if (isDeleted) {
-      System.out.println("Employee with Employee ID " + employeeID + " deleted successfully.");
-    } else {
-      System.out.println("Employee with Employee ID " + employeeID + " not found.");
+  public static void deleteEmployee(EmployeeManager employeeManager) {
+    boolean isLooping = true;
+    while (isLooping) {
+      System.out.print("Enter the Employee ID to delete: ");
+      String employeeID = MenuUtils.getUserInput();
+      boolean isDeleted = employeeManager.deleteEmployee(employeeID);
+
+      if (isDeleted) {
+        System.out.println("Employee with Employee ID " + employeeID + " deleted successfully.");
+      } else {
+        System.out.println("Employee with Employee ID " + employeeID + " not found.");
+      }
+
+      System.out.print("Do you want to delete another employee? (Y/N): ");
+      isLooping = MenuUtils.yesOrNo(isLooping);
     }
   }
 
@@ -114,11 +129,17 @@ public class EmployeeAction {
     RepositoryPrinter repositoryPrinter = new RepositoryPrinter();
     repositoryPrinter.setEmployeeManager(employeeManager);
 
-    if (employees.isEmpty()) {
+    try {
+      if (employees.isEmpty()) {
+        System.out.println("No employees found in the city: " + city);
+      } else {
+        System.out.println("\nEmployees in the city: " + city);
+        repositoryPrinter.printEmployeesByCity(employees);
+      }
+    } catch (Exception NullPointerException) {
       System.out.println("No employees found in the city: " + city);
-    } else {
-      System.out.println("Employees in the city: " + city);
-      repositoryPrinter.printEmployeesByCity(city);
     }
+
+    MenuUtils.waitForBackToMenu();
   }
 }

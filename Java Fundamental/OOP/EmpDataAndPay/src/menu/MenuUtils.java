@@ -27,8 +27,8 @@ public class MenuUtils {
     while (true) {
       System.out.print("Input your age: ");
       age = getValidNumericInput();
-      if (age < 0 || age > 120) {
-        System.out.println("Invalid age. Please enter a valid age between 0 and 120.");
+      if (age < 18 || age > 120) {
+        System.out.println("Invalid age. Please enter a valid age between 18 and 120.");
       } else {
         break;
       }
@@ -51,16 +51,12 @@ public class MenuUtils {
     return employeeType;
   }
 
-  protected static boolean yesOrNo(boolean isLooping) {
+  public static boolean yesOrNo(boolean isLooping) {
     String choice = MenuUtils.getUserInput();
     if (!choice.equalsIgnoreCase("Y")) {
       isLooping = false;
     }
     return isLooping;
-  }
-
-  protected static boolean isValidCity(String city) {
-    return !city.isEmpty() && city.matches("^[a-zA-Z ]+$");
   }
 
   public static void waitForBackToMenu() {

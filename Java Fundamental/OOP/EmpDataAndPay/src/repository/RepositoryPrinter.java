@@ -115,20 +115,14 @@ public class RepositoryPrinter {
     System.out.print(sb.toString());
   }
 
-  public void printEmployeesByCity(String city) {
-    if (employeeManager == null) {
-      System.out.println("EmployeeManager instance is not set. Cannot print employees.");
-      return;
-    }
-
-    List<Employee> employees = employeeManager.getEmployeeByCity(city);
-
+  public void printEmployeesByCity(List<Employee> employees) {
     StringBuilder sb = new StringBuilder();
     sb.append(
         "============================================================================================================\n");
-    sb.append("|| No || EmployeeID\t|| \t Name  || \tAddress\t || Age || \tDescription\t || \tPlacement ||\n");
+    sb.append("|| No || EmployeeID\t|| \t Name || \tAddress\t || Age || \tDescription\t ||\tPlacement ||\n");
     sb.append(
         "============================================================================================================\n");
+
     int i = 1;
     for (Employee employee : employees) {
       sb.append("|| ");
@@ -147,10 +141,9 @@ public class RepositoryPrinter {
       sb.append(String.format("%-14s", employee.getPlacement().getCity()));
       sb.append("||\n");
     }
-
     sb.append(
-        "============================================================================================================\n");
-    System.out.print(sb.toString());
+        "============================================================================================================");
+    System.out.println(sb.toString());
   }
 
   public void setEmployeeManager(EmployeeManager employeeManager) {

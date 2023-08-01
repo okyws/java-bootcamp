@@ -28,6 +28,8 @@ public class EmployeeMenu {
 
       switch (choice) {
         case 1:
+          System.out.println("\nCurrent employees in the system: ");
+          repositoryPrinter.printAllEmployees();
           EmployeeAction.addEmployee(repositoryPrinter, employeeManager);
           break;
         case 2:
@@ -36,21 +38,24 @@ public class EmployeeMenu {
           MenuUtils.waitForBackToMenu();
           break;
         case 3:
+          System.out.println("\nLatest employees data in the system: ");
           repositoryPrinter.printAllEmployees();
           MenuUtils.waitForBackToMenu();
           break;
         case 4:
+          System.out.println("\nLatest employees payroll data in the system: ");
           repositoryPrinter.printAllEmployeesPayroll();
           MenuUtils.waitForBackToMenu();
           break;
         case 5:
+          System.out.println("\nLatest employees data in the system: ");
           repositoryPrinter.printAllEmployees();
           EmployeeAction.deleteEmployee(employeeManager);
-          MenuUtils.waitForBackToMenu();
           break;
         case 6:
+          System.out.println("\nLatest employees data in the system: ");
+          repositoryPrinter.printAllEmployees();
           EmployeeAction.searchEmployee(employeeManager);
-          MenuUtils.waitForBackToMenu();
           break;
         case 0:
           System.out.println("Exiting the program...");

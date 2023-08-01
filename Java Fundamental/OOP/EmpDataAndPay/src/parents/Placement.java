@@ -46,6 +46,10 @@ public class Placement implements IUMKProvider {
     return cityUMK;
   }
 
+  public static Map<String, Double> getCityUMK() {
+    return cityUMK;
+  }
+
   public Placement getPlacementByCity(String city) {
     for (String placementCity : cityUMK.keySet()) {
       if (placementCity.equalsIgnoreCase(city)) {
