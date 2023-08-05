@@ -3,21 +3,17 @@ import java.util.Scanner;
 public class soal2 {
   public static void main(String[] args) {
     Scanner input = new Scanner(System.in);
-
     String world = input.nextLine();
+    int result = countWords(world);
 
+    System.out.println(result);
+    input.close();
+  }
+
+  static int countWords(String world) {
     int result = 0;
     for (int i = 0; i < world.length(); i++) {
       char capital = world.charAt(i);
-
-      // if (capital == 'a' || capital == 'A' || capital == 'D' || capital == 'd' ||
-      // capital == 'o' || capital == 'O'
-      // || capital == 'P' || capital == 'p' || capital == 'R' || capital == 'r') {
-      // result += 1;
-      // } else if (capital == 'B' || capital == 'b') {
-      // result += 2;
-      // }
-
       switch (capital) {
         case 'A':
         case 'a':
@@ -51,8 +47,6 @@ public class soal2 {
           break;
       }
     }
-
-    input.close();
-    System.out.println(result);
+    return result;
   }
 }

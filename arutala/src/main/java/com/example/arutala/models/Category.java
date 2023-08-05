@@ -2,6 +2,7 @@ package com.example.arutala.models;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -36,6 +37,9 @@ public class Category implements Serializable {
   @Temporal(TemporalType.TIMESTAMP)
   @LastModifiedDate
   private Date updatedAt;
+
+  @OneToMany
+  private List<Product> products;
 
   public Category() {
     super();
@@ -86,5 +90,13 @@ public class Category implements Serializable {
 
   public void setUpdatedAt(Date updatedAt) {
     this.updatedAt = updatedAt;
+  }
+
+  public List<Product> getProducts() {
+    return products;
+  }
+
+  public void setProducts(List<Product> products) {
+    this.products = products;
   }
 }

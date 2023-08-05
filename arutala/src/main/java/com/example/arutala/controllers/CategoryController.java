@@ -1,9 +1,11 @@
 package com.example.arutala.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,29 +17,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.arutala.dtos.CategoryDTO;
 import com.example.arutala.models.Category;
 import com.example.arutala.repositories.CategoryRepository;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/category")
+@RequestMapping("/api/category")
 public class CategoryController {
   @Autowired
   CategoryRepository categoryRepo;
 
-  // API Create
+  ModelMapper mapper = new ModelMapper();
+
   @PostMapping("/create")
   public ResponseEntity<Object> createCategory(@Valid @RequestBody Category body) {
     Map<String, Object> result = new HashMap<String, Object>();
-    String message = "Create Category Sukses.";
+    String message = "Create Member Sukses.";
     HttpStatus status = HttpStatus.CREATED;
 
     try {
       // Menambahkan data, menggunakan metho save() yang ada repository
-      Category categoryEntity = categoryRepo.save(body);
+      Category category = categoryRepo.save(body);
       result.put("status", status);
       result.put("message", message);
-      result.put("data", categoryEntity);
+      result.put("data", category);
+
     } catch (Exception e) {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = "Proses Create Error";
@@ -47,22 +53,36 @@ public class CategoryController {
     }
 
     return ResponseEntity.status(status).body(result);
+
   }
 
-  // API Read All
-  @GetMapping("/")
-  public ResponseEntity<Object> readAllCategory() {
+  @GetMapping("/readall")
+  public ResponseEntity<Object> readAll() {
     Map<String, Object> result = new HashMap<String, Object>();
-    String message = "Read All Data Category Sukses.";
+    String message = "Read data Sukses.";
     HttpStatus status = HttpStatus.OK;
 
     try {
       // Read data member dari Database
-      List<Category> listAllCategory = categoryRepo.findAll();
+      List<Category> listAllMember = categoryRepo.findAll();
+      List<CategoryDTO> listAllDto = new ArrayList<CategoryDTO>();
+
+      // Mapping data dari entity ke DTO
+      for (Category entity : listAllMember) {
+        CategoryDTO dto = mapper.map(entity, CategoryDTO.class);
+
+        // dto.setCategoryId(entity.getCategoryId());
+        // dto.setName(entity.getName());
+        // dto.setCreatedAt(entity.getCreatedAt());
+        // dto.setDescription(entity.getDescription());
+        // dto.setUpdatedAt(entity.getUpdatedAt());
+
+        listAllDto.add(dto);
+      }
 
       result.put("status", status);
       result.put("message", message);
-      result.put("data", listAllCategory);
+      result.put("data", listAllDto);// dimasukan ke map sebagai body response API
 
     } catch (Exception e) {
       status = HttpStatus.INTERNAL_SERVER_ERROR;

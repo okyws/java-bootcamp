@@ -1,42 +1,42 @@
 package com.example.arutala.controllers;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.arutala.models.Member;
-import com.example.arutala.repositories.MemberRepository;
+import com.example.arutala.dtos.ProductDTO;
+import com.example.arutala.models.Product;
+import com.example.arutala.repositories.ProductRepository;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/member")
-public class MemberController {
+@RequestMapping("/api/product")
+public class ProductController {
   @Autowired
-  MemberRepository memberRepo;
+  ProductRepository productRepo;
 
-  // API Create
+  ModelMapper mapper = new ModelMapper();
+
   @PostMapping("/create")
-  public ResponseEntity<Object> createMember(@Valid @RequestBody Member body) {
+  public ResponseEntity<Object> createProduct(@Valid @RequestBody Product body) {
     Map<String, Object> result = new HashMap<String, Object>();
     String message = "Create Member Sukses.";
     HttpStatus status = HttpStatus.CREATED;
 
     try {
       // Menambahkan data, menggunakan metho save() yang ada repository
-      Member memberEntity = memberRepo.save(body);
+      Product product = productRepo.save(body);
       result.put("status", status);
       result.put("message", message);
-      result.put("data", memberEntity);
+      result.put("data", product);
+
     } catch (Exception e) {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = "Proses Create Error";
@@ -46,22 +46,44 @@ public class MemberController {
     }
 
     return ResponseEntity.status(status).body(result);
+
   }
 
-  // API Read All Member Data
-  @GetMapping("/")
-  public ResponseEntity<Object> readAllMember() {
+  @GetMapping("/readall")
+  public ResponseEntity<Object> readAll() {
     Map<String, Object> result = new HashMap<String, Object>();
     String message = "Read data Sukses.";
     HttpStatus status = HttpStatus.OK;
 
     try {
       // Read data member dari Database
-      List<Member> listAllMember = memberRepo.findAll();
+      List<Product> listAll = productRepo.findAll();
+      List<ProductDTO> listDto = new ArrayList<ProductDTO>();
+
+      // mapping dari entity ke dto
+      for (Product product : listAll) {
+        ProductDTO dto = mapper.map(product, ProductDTO.class);
+
+        // dto.setProductId(product.getProductId());
+        // dto.setProductName(product.getProductName());
+        // dto.setUnitOfStock(product.getUnitOfStock());
+        // dto.setUnitPrice(product.getUnitPrice());
+        //
+        // CategoryDTO categoryDto = new CategoryDTO();
+        // categoryDto.setCategoryId(product.getCategory().getCategoryId());
+        // categoryDto.setDescription(product.getCategory().getDescription());
+        // categoryDto.setName(product.getCategory().getName());
+        // categoryDto.setCreatedAt(product.getCategory().getCreatedAt());
+        // categoryDto.setUpdatedAt(product.getCategory().getUpdatedAt());
+
+        // dto.setCategory(categoryDto);
+
+        listDto.add(dto);
+      }
 
       result.put("status", status);
       result.put("message", message);
-      result.put("data", listAllMember);
+      result.put("data", listDto);
 
     } catch (Exception e) {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -74,32 +96,31 @@ public class MemberController {
     return ResponseEntity.status(status).body(result);
   }
 
-  // API Read member by Id
+  // API Read Category by Id
   @GetMapping("/id")
-  public ResponseEntity<Object> readMemberById(@RequestParam(name = "memberId") Long memberId) {
+  public ResponseEntity<Object> readProductById(@RequestParam(name = "productId") Long productId) {
     Map<String, Object> result = new HashMap<String, Object>();
     String message = "Read data Sukses.";
     HttpStatus status = HttpStatus.OK;
 
     try {
-      // Read data member dari Database
-      Member memberEntity = memberRepo.findById(memberId).orElse(null);
+      // read product dari database
+      Product productEntity = productRepo.findById(productId).orElse(null);
 
-      if (memberEntity == null) {
+      if (productEntity == null) {
         status = HttpStatus.NOT_FOUND;
-        message = "Data dengan Member Id " + memberId + " tidak ditemukan.";
+        message = "Data dengan Product Id " + productId + " tidak ditemukan.";
 
         result.put("status", status);
         result.put("message", message);
-        result.put("data", memberEntity);
+        result.put("data", productEntity);
 
         return ResponseEntity.status(status).body(result);
       }
 
       result.put("status", status);
       result.put("message", message);
-      result.put("data", memberEntity);
-
+      result.put("data", productEntity);
     } catch (Exception e) {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
       message = "Proses Create Error";
@@ -112,40 +133,41 @@ public class MemberController {
   }
 
   // API Update
-  @PutMapping("/update")
-  public ResponseEntity<Object> updateMember(@RequestParam(name = "memberId") Long memberId, @RequestBody Member body) {
+  @PostMapping("/update")
+  public ResponseEntity<Object> updateProduct(@RequestParam(name = "productId") Long productId,
+      @RequestBody Product body) {
     Map<String, Object> result = new HashMap<String, Object>();
     String message = "Update Sukses.";
     HttpStatus status = HttpStatus.OK;
 
     try {
-      // Read data member dari Database
-      Member memberEntity = memberRepo.findById(memberId).orElse(null);
+      // Read data product dari Database
+      Product productEntity = productRepo.findById(productId).orElse(null);
 
-      if (memberEntity == null) {
+      if (productEntity == null) {
         status = HttpStatus.NOT_FOUND;
-        message = "Data dengan Member Id " + memberId + " tidak ditemukan.";
+        message = "Data dengan Product Id " + productId + " tidak ditemukan.";
 
         result.put("status", status);
         result.put("message", message);
-        result.put("data", memberEntity);
+        result.put("data", productEntity);
 
         return ResponseEntity.status(status).body(result);
       }
 
-      memberEntity.setMemberName(body.getMemberName());
-      memberEntity.setAddress(body.getAddress());
+      productEntity.setProductName(body.getProductName());
+      productEntity.setUnitPrice(body.getUnitPrice());
 
-      // update ke database menggunakan method save() di repository
-      memberRepo.save(memberEntity);
+      // update data product ke database
+      productRepo.save(productEntity);
 
       result.put("status", status);
       result.put("message", message);
-      result.put("data", memberEntity);
+      result.put("data", productEntity);
 
     } catch (Exception e) {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
-      message = "Proses Create Error";
+      message = "Proses Update Error";
       result.put("status", status);
       result.put("message", message);
       result.put("error", e);
@@ -154,34 +176,34 @@ public class MemberController {
     return ResponseEntity.status(status).body(result);
   }
 
-  // API Delete member by Id
-  @DeleteMapping("/delete")
-  public ResponseEntity<Object> deleteMemberById(@RequestParam(name = "memberId") Long memberId) {
+  // API Delete product by Id
+  @PostMapping("/delete")
+  public ResponseEntity<Object> deleteProductById(@RequestParam(name = "productId") Long productId) {
     Map<String, Object> result = new HashMap<String, Object>();
     String message = "Delete data Sukses.";
     HttpStatus status = HttpStatus.OK;
 
     try {
-      // Read data member dari Database
-      Member memberEntity = memberRepo.findById(memberId).orElse(null);
+      // Read data product dari Database
+      Product productEntity = productRepo.findById(productId).orElse(null);
 
-      if (memberEntity == null) {
+      if (productEntity == null) {
         status = HttpStatus.NOT_FOUND;
-        message = "Data dengan Member Id " + memberId + " tidak ditemukan.";
+        message = "Data dengan Product Id " + productId + " tidak ditemukan.";
 
         result.put("status", status);
         result.put("message", message);
-        result.put("data", memberEntity);
+        result.put("data", productEntity);
 
         return ResponseEntity.status(status).body(result);
       }
 
       // delete data
-      memberRepo.delete(memberEntity);
+      productRepo.delete(productEntity);
 
       result.put("status", status);
       result.put("message", message);
-      result.put("data", memberEntity);
+      result.put("data", productEntity);
 
     } catch (Exception e) {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -194,31 +216,30 @@ public class MemberController {
     return ResponseEntity.status(status).body(result);
   }
 
-  // Read API by member name
-  @GetMapping("/byname")
-  public ResponseEntity<Object> readMemberByName(@RequestParam(name = "memberName") String memberName) {
+  // Read API by product name
+  @GetMapping("/name")
+  public ResponseEntity<Object> readProductByName(@RequestParam(name = "productName") String productName) {
     Map<String, Object> result = new HashMap<String, Object>();
     String message = "Read data Sukses.";
     HttpStatus status = HttpStatus.OK;
 
     try {
-      // Read data member dari Database
-      List<Member> memberEntity = memberRepo.findByMemberNameContaining(memberName);
+      // Read data product dari Database
+      List<Product> listAll = productRepo.findByProductNameContaining(productName);
+      List<ProductDTO> listDto = new ArrayList<ProductDTO>();
 
-      if (memberEntity.isEmpty()) {
-        status = HttpStatus.NOT_FOUND;
-        message = "Data dengan Member Name " + memberName + " tidak ditemukan.";
+      // mapping dari entity ke dto
+      for (Product product : listAll) {
+        ProductDTO dto = mapper.map(product, ProductDTO.class);
 
-        result.put("status", status);
-        result.put("message", message);
-        result.put("data", memberEntity);
-
-        return ResponseEntity.status(status).body(result);
+        listDto.add(dto);
       }
 
       result.put("status", status);
       result.put("message", message);
-      result.put("data", memberEntity);
+      result.put("data", listDto);
+
+      return ResponseEntity.status(status).body(result);
 
     } catch (Exception e) {
       status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -230,4 +251,5 @@ public class MemberController {
 
     return ResponseEntity.status(status).body(result);
   }
+
 }
